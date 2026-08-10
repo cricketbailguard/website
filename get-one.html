@@ -8,6 +8,7 @@
 <meta property="og:title" content="Get a bail guard">
 <meta property="og:type" content="website">
 <link rel="stylesheet" href="styles.css">
+<script>try{var t=localStorage.getItem('bg-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 </head>
 <body>
 
@@ -34,41 +35,48 @@
     <p>We do not sell anything. The design is free and open, so the fastest route is almost always to make your own from parts you can buy locally.</p>
   </div>
 
-  <div class="grid g2">
-    <div class="card">
-      <h2 style="font-size:1.15rem">Make your own</h2>
-      <p style="color:var(--ink-2);font-size:.94rem;margin-top:.6rem">
-        Four inexpensive parts, all standard items from a hardware store. No
-        specialist tools, no 3D printing, nothing to order from us.
-      </p>
-      <p style="margin-top:1rem"><a class="btn btn-ghost" href="https://drive.google.com/file/d/1ZkjBxj3qITr_iui1apXLaLAND04-oaC-/view" target="_blank" rel="noopener">Setup guide</a></p>
+  <div class="card">
+    <h2 style="font-size:1.15rem">Make your own</h2>
+    <p style="color:var(--ink-2);font-size:.94rem;margin-top:.6rem;max-width:64ch">
+      Four inexpensive parts, all standard items from a hardware store. No specialist
+      tools, no 3D printing, nothing to order from us. One set takes a few minutes to
+      put together, and a whole league can be kitted out in an afternoon.
+    </p>
+    <div class="grid g2" style="margin-top:1.2rem">
+      <a class="step" href="https://drive.google.com/file/d/1TX1CKEmomU3Qqo9ijP7NL155qu-osBJl/view" target="_blank" rel="noopener">
+        <span class="n">1</span><span class="body"><b>Make the parts</b><span>Parts list, quantities and how to assemble kits in bulk</span></span><span class="meta">PDF</span></a>
+      <a class="step" href="https://drive.google.com/file/d/1ZkjBxj3qITr_iui1apXLaLAND04-oaC-/view" target="_blank" rel="noopener">
+        <span class="n">2</span><span class="body"><b>Fit it to the stumps</b><span>One printable page you can hand to an umpire or a club</span></span><span class="meta">PDF</span></a>
     </div>
-    <div class="card">
-      <h2 style="font-size:1.15rem">Kit out a whole league</h2>
-      <p style="color:var(--ink-2);font-size:.94rem;margin-top:.6rem">
-        If you need dozens or hundreds of sets, there is a guide to assembling
-        packages in bulk, with parts lists and rough costs.
-      </p>
-      <p style="margin-top:1rem"><a class="btn btn-ghost" href="https://drive.google.com/file/d/1TX1CKEmomU3Qqo9ijP7NL155qu-osBJl/view" target="_blank" rel="noopener">Packaging guide</a></p>
-    </div>
+    <p style="margin-top:1rem;font-size:.9rem;color:var(--muted)">Prefer to watch? The <a href="https://www.youtube.com/playlist?list=PLcYYPWle7j_Dykebkq_3pMlpxEiskwJOy" target="_blank" rel="noopener">full video playlist</a> covers the design and the setup.</p>
   </div>
 
   <div class="card" style="margin-top:1.6rem;border-left:4px solid var(--accent)">
     <h2 style="font-size:1.15rem">Manufacturers</h2>
-    <p style="color:var(--ink-2);font-size:.94rem;margin-top:.6rem;max-width:62ch">
-      The design is published under CC BY 4.0 as prior art, which means you are
-      free to manufacture and sell bail guards commercially. You do not need our
-      permission and you owe us nothing. We would simply like to know, so we can
-      point clubs and leagues towards you.
+    <p style="color:var(--ink-2);font-size:.94rem;margin-top:.6rem;max-width:64ch">
+      The design is published under CC BY 4.0 as prior art, so you are free to
+      manufacture and sell bail guards commercially. You do not need our permission
+      and you owe us nothing.
+    </p>
+    <p style="color:var(--ink-2);font-size:.94rem;margin-top:.8rem;max-width:64ch">
+      Talk to us anyway, because we can probably save you time. There are several
+      working variants of this design, and which one suits you depends on what you
+      already have: your tooling, your materials, whether you are moulding silicone
+      or sourcing off the shelf parts, and how many sets you need. Tell us your
+      constraints and we will suggest the variant that fits them, share what failed
+      in our own trials so you do not repeat it, and point clubs and leagues towards
+      you once you are producing.
     </p>
   </div>
 
   <div class="card" style="margin-top:1.6rem">
-    <h2 style="font-size:1.15rem">Get in touch</h2>
-    <p style="color:var(--ink-2);font-size:.94rem;margin-top:.6rem;max-width:62ch">
-      If you run a league, coach a team, or want to manufacture these, we would
-      like to hear from you. Tell us roughly how many sets you need and where you
-      are, and we will help.
+    <h2 style="font-size:1.15rem">Tell us your story</h2>
+    <p style="color:var(--ink-2);font-size:.94rem;margin-top:.6rem;max-width:64ch">
+      If you have made your club, your league or your kids&rsquo; academy safer with a
+      bail guard, we would love to hear how it went. What your umpires made of it,
+      what you would change, how many sets you ended up making. Send us your story
+      with photos or video and we will add it to this site, so the next league has
+      someone else&rsquo;s experience to learn from rather than starting cold.
     </p>
     <p style="margin-top:1rem;color:var(--muted);font-size:.92rem">We are setting up a contact address for this. Until it is live, the fastest
       route is to open an issue on the <a href="https://github.com/anishanup/cricket-bail-safety-trial-tools/issues" target="_blank" rel="noopener">field trial repository</a>, and we will reply there.</p>
@@ -84,7 +92,7 @@
     Option 1 or 2 is what I would choose. Until you decide, the button above is inactive.
   </div>
 
-  <p style="margin-top:2rem"><a class="btn btn-ghost" href="index.html">Back to the main page</a></p>
+  <p style="margin-top:2rem"><a class="btn btn-ghost" href="index.html">Home</a></p>
 </div></section>
 
 <footer><div class="wrap">

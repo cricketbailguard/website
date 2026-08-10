@@ -8,7 +8,9 @@ if (location.search.indexOf('draft') > -1) document.documentElement.setAttribute
   if (btn) btn.addEventListener('click', function () {
     var dark = matchMedia('(prefers-color-scheme: dark)').matches;
     var cur = root.getAttribute('data-theme') || (dark ? 'dark' : 'light');
-    root.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+    var next = cur === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('bg-theme', next); } catch (e) {}
   });
 
   var donutG = document.getElementById('donutG');

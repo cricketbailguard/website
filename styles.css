@@ -89,8 +89,8 @@ section{padding:clamp(3.2rem,6vw,5rem) 0}
 
 /* section dividers */
 .divider{border-top:1px solid var(--border);padding-top:1.35rem;margin-bottom:2.2rem;display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap}
-.divider .num{font-size:.95rem;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums}
-.divider .name{font-size:1.05rem;font-weight:660;color:var(--ink)}
+.divider .num{font-size:1.15rem;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums}
+.divider .name{font-size:1.28rem;font-weight:670;color:var(--ink);letter-spacing:-.01em}
 .divider .sub{font-size:.92rem;color:var(--muted);margin-left:auto}
 @media (max-width:620px){.divider .sub{margin-left:0;flex-basis:100%}}
 .sec-head{margin-bottom:2rem}
@@ -110,7 +110,7 @@ section{padding:clamp(3.2rem,6vw,5rem) 0}
 .diagram{background:#fff;border:1px solid var(--border);border-radius:14px;padding:.85rem;box-shadow:var(--shadow)}
 .video{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow)}
 .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-.cap{margin-top:.5rem;font-size:.84rem;color:var(--muted)}
+.cap{margin-top:.55rem;font-size:.92rem;color:var(--ink-2);line-height:1.5}
 
 /* problem */
 .hits{display:grid;gap:.55rem}
@@ -184,6 +184,10 @@ tfoot td{font-weight:650;border-bottom:none}
 @media (max-width:620px){.petition{grid-template-columns:1fr;text-align:center;justify-items:center}}
 .qr{width:150px;height:150px;background:#fff;border:1px solid var(--border);border-radius:12px;padding:9px;flex:none}
 .qr img{width:100%;height:100%}
+.actions{display:flex;gap:.55rem;align-items:center;flex-wrap:wrap;margin-top:1.2rem}
+.icon-btn{width:44px;height:44px;border-radius:10px;border:1px solid var(--border);background:var(--raised);color:var(--ink-2);display:grid;place-items:center;cursor:pointer;text-decoration:none;flex:none}
+.icon-btn:hover{border-color:var(--baseline);color:var(--ink)}
+.icon-btn svg{width:20px;height:20px}
 
 /* people */
 .people{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:.8rem;margin-top:1.4rem}
@@ -219,3 +223,40 @@ footer a{color:var(--ink-2)}
 .fact{display:inline-block;margin-top:.6rem;font-size:.85rem;color:var(--ink-2);background:color-mix(in srgb,var(--icon) 12%,transparent);border:1px solid color-mix(in srgb,var(--icon) 30%,transparent);padding:.3rem .65rem;border-radius:7px}
 
 :root[data-draft] .todo{display:block}
+
+/* ---- mobile refinements ---- */
+@media (max-width:620px){
+  /* 2. equal width organisation cards */
+  .logos{display:grid;grid-template-columns:1fr;gap:.55rem}
+  .logo{width:100%;align-items:flex-start}
+  /* 4. injury rows stack cleanly instead of half wrapping */
+  .hit{flex-direction:column;gap:.3rem}
+  .hit span{min-width:0}
+  /* 5. personas in a single column, so no blank cell */
+  .who{grid-template-columns:1fr}
+  /* petition card actions stay tidy */
+  .actions{width:100%}
+  .actions .btn{flex:1}
+}
+
+/* nav has to fit four links plus the toggle on a narrow phone */
+@media (max-width:560px){
+  .wrap{width:min(1060px,100% - 2rem)}
+  .nav-in{gap:.55rem}
+  .navlink{font-size:.8rem}
+  .brand{font-size:.98rem;gap:.4rem}
+  .brand svg{width:22px;height:22px}
+  .theme-btn{width:32px;height:32px}
+}
+@media (max-width:400px){
+  .nav-in{gap:.42rem}
+  .navlink{font-size:.75rem}
+}
+
+@media (max-width:345px){
+  .wrap{width:min(1060px,100% - 1.5rem)}
+  .nav-in{gap:.3rem}
+  .navlink{font-size:.7rem}
+  .brand svg{width:20px;height:20px}
+  .theme-btn{width:28px;height:28px}
+}
