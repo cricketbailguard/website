@@ -200,7 +200,7 @@ tfoot td{font-weight:650;border-bottom:none}
 
 footer{padding:2.8rem 0;color:var(--muted);font-size:.87rem;border-top:1px solid var(--border)}
 footer a{color:var(--ink-2)}
-.todo{background:#fff8e1;border:1px solid #e8cf8a;color:#5a4300;border-radius:10px;padding:.85rem 1.1rem;font-size:.86rem;margin-top:1.2rem}
+.todo{display:none;background:#fff8e1;border:1px solid #e8cf8a;color:#5a4300;border-radius:10px;padding:.85rem 1.1rem;font-size:.86rem;margin-top:1.2rem}
 :root[data-theme="dark"] .todo{background:#2a2410;border-color:#5a4a1a;color:#e8cf8a}
 @media (prefers-color-scheme:dark){:root:where(:not([data-theme="light"])) .todo{background:#2a2410;border-color:#5a4a1a;color:#e8cf8a}}
 
@@ -217,3 +217,5 @@ footer a{color:var(--ink-2)}
 .tl-item figure img{border-radius:11px;border:1px solid var(--border);background:#fff}
 .tl-item figcaption{font-size:.82rem;color:var(--muted);margin-top:.4rem}
 .fact{display:inline-block;margin-top:.6rem;font-size:.85rem;color:var(--ink-2);background:color-mix(in srgb,var(--icon) 12%,transparent);border:1px solid color-mix(in srgb,var(--icon) 30%,transparent);padding:.3rem .65rem;border-radius:7px}
+
+:root[data-draft] .todo{display:block}

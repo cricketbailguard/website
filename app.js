@@ -1,3 +1,6 @@
+/* reviewer notes are hidden unless the url carries ?draft */
+if (location.search.indexOf('draft') > -1) document.documentElement.setAttribute('data-draft','1');
+
 /* Bail Guard, shared behaviour */
 (function () {
   var root = document.documentElement;
