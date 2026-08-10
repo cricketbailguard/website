@@ -3,439 +3,285 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bail Guard — a free, open safety fix for cricket bails</title>
-<meta name="description" content="A retrofit tether that stops cricket bails flying off the stumps at speed. Openly published, free for anyone to build. Field-tested across 491 games.">
-
-<!-- Social preview — add og:image and og:url once bailguard.org is live -->
-<meta property="og:title" content="Bail Guard — a free, open safety fix for cricket bails">
-<meta property="og:description" content="A retrofit tether that stops cricket bails flying off the stumps at speed. Openly published, free for anyone to build.">
+<title>Bail Guard: flying cricket bail injuries, never again</title>
+<meta name="description" content="A free, open, retrofit safety device that stops cricket bails flying off the stumps. Complies with MCC Law 8.3.4. Field tested across 491 games.">
+<meta property="og:title" content="Bail Guard: flying cricket bail injuries, never again">
+<meta property="og:description" content="A free, open, retrofit safety device that stops cricket bails flying off the stumps. Complies with MCC Law 8.3.4.">
 <meta property="og:type" content="website">
-
-<style>
-/* ============================================================
-   Bail Guard — prototype stylesheet
-   Palette values are the validated dataviz reference instance.
-   ============================================================ */
-:root {
-  color-scheme: light;
-  --surface:        #fcfcfb;
-  --plane:          #f9f9f7;
-  --raised:         #ffffff;
-  --ink:            #0b0b0b;
-  --ink-2:          #52514e;
-  --muted:          #898781;
-  --grid:           #e1e0d9;
-  --baseline:       #c3c2b7;
-  --accent:         #2a78d6;
-  --accent-soft:    #cde2fb;
-  --border:         rgba(11,11,11,0.10);
-  --shadow:         0 1px 2px rgba(11,11,11,.05), 0 8px 24px rgba(11,11,11,.06);
-}
-@media (prefers-color-scheme: dark) {
-  :root:where(:not([data-theme="light"])) {
-    color-scheme: dark;
-    --surface:     #1a1a19;
-    --plane:       #0d0d0d;
-    --raised:      #212120;
-    --ink:         #ffffff;
-    --ink-2:       #c3c2b7;
-    --muted:       #898781;
-    --grid:        #2c2c2a;
-    --baseline:    #383835;
-    --accent:      #3987e5;
-    --accent-soft: #184f95;
-    --border:      rgba(255,255,255,0.10);
-    --shadow:      0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.36);
-  }
-}
-:root[data-theme="dark"] {
-  color-scheme: dark;
-  --surface:     #1a1a19;
-  --plane:       #0d0d0d;
-  --raised:      #212120;
-  --ink:         #ffffff;
-  --ink-2:       #c3c2b7;
-  --muted:       #898781;
-  --grid:        #2c2c2a;
-  --baseline:    #383835;
-  --accent:      #3987e5;
-  --accent-soft: #184f95;
-  --border:      rgba(255,255,255,0.10);
-  --shadow:      0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.36);
-}
-
-* { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
-body {
-  margin: 0;
-  background: var(--plane);
-  color: var(--ink);
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-  font-size: 17px;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-}
-h1, h2, h3 { line-height: 1.15; letter-spacing: -0.02em; margin: 0; font-weight: 640; }
-p { margin: 0; }
-a { color: var(--accent); }
-.wrap { width: min(1120px, 100% - 2.5rem); margin-inline: auto; }
-
-/* ---------- nav ---------- */
-.nav {
-  position: sticky; top: 0; z-index: 50;
-  background: color-mix(in srgb, var(--plane) 88%, transparent);
-  backdrop-filter: saturate(1.6) blur(12px);
-  border-bottom: 1px solid var(--border);
-}
-.nav-in { display: flex; align-items: center; gap: 1.25rem; height: 62px; }
-.brand { display: flex; align-items: center; gap: .6rem; font-weight: 680; letter-spacing: -.02em; text-decoration: none; color: var(--ink); margin-right: auto; }
-.brand-mark { width: 26px; height: 26px; flex: none; }
-.nav a.navlink { color: var(--ink-2); text-decoration: none; font-size: .93rem; font-weight: 500; }
-.nav a.navlink:hover { color: var(--ink); }
-@media (max-width: 800px) { .nav .navlink { display: none; } }
-.theme-btn {
-  border: 1px solid var(--border); background: var(--raised); color: var(--ink-2);
-  width: 34px; height: 34px; border-radius: 9px; cursor: pointer; display: grid; place-items: center;
-}
-.theme-btn:hover { color: var(--ink); }
-
-/* ---------- hero ---------- */
-.hero { padding: clamp(3rem, 7vw, 5.5rem) 0 clamp(2rem, 4vw, 3rem); }
-.eyebrow {
-  display: inline-flex; align-items: center; gap: .5rem;
-  font-size: .8rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
-  color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent);
-  border: 1px solid color-mix(in srgb, var(--accent) 24%, transparent);
-  padding: .34rem .7rem; border-radius: 999px;
-}
-.hero h1 { font-size: clamp(2.3rem, 5.6vw, 4rem); margin: 1.1rem 0 0; max-width: 17ch; }
-.hero .lede { font-size: clamp(1.05rem, 1.8vw, 1.3rem); color: var(--ink-2); max-width: 58ch; margin-top: 1.1rem; }
-.byline { margin-top: 1.4rem; font-size: .95rem; color: var(--muted); }
-.byline strong { color: var(--ink-2); font-weight: 600; }
-
-.cta-row { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 2rem; }
-.btn {
-  display: inline-flex; align-items: center; gap: .5rem;
-  padding: .72rem 1.15rem; border-radius: 10px; text-decoration: none;
-  font-size: .95rem; font-weight: 570; border: 1px solid transparent; cursor: pointer;
-}
-.btn-primary { background: var(--accent); color: #fff; }
-.btn-primary:hover { filter: brightness(1.07); }
-.btn-ghost { background: var(--raised); color: var(--ink); border-color: var(--border); }
-.btn-ghost:hover { border-color: var(--baseline); }
-
-.hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(1.5rem, 4vw, 3.5rem); align-items: center; }
-@media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
-
-.video {
-  position: relative; aspect-ratio: 16/9; border-radius: 14px; overflow: hidden;
-  background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow);
-}
-.video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-.video-cap { margin-top: .6rem; font-size: .85rem; color: var(--muted); }
-
-/* ---------- section furniture ---------- */
-section { padding: clamp(3rem, 6vw, 5rem) 0; }
-.sec-head { max-width: 62ch; margin-bottom: 2.2rem; }
-.sec-head h2 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); }
-.sec-head p { color: var(--ink-2); margin-top: .85rem; }
-.kicker { font-size: .8rem; font-weight: 650; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: .7rem; }
-
-.band { background: var(--surface); border-block: 1px solid var(--border); }
-
-/* ---------- hero figure + stat tiles ---------- */
-.figure-row { display: grid; grid-template-columns: auto 1fr; gap: clamp(1.5rem, 5vw, 4rem); align-items: center; }
-@media (max-width: 780px) { .figure-row { grid-template-columns: 1fr; } }
-.hero-fig { font-size: clamp(3.6rem, 9vw, 6rem); font-weight: 680; letter-spacing: -.04em; line-height: 1; color: var(--ink); }
-.hero-fig-label { color: var(--ink-2); margin-top: .5rem; max-width: 30ch; }
-
-.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-.tile { background: var(--surface); padding: 1.1rem 1.2rem; }
-.tile .t-label { font-size: .82rem; color: var(--muted); }
-.tile .t-value { font-size: 1.75rem; font-weight: 640; letter-spacing: -.02em; margin-top: .2rem; }
-.tile .t-note { font-size: .8rem; color: var(--muted); margin-top: .15rem; }
-
-/* ---------- chart ---------- */
-.card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: clamp(1.2rem, 2.5vw, 1.8rem); }
-.chart-title { font-weight: 620; font-size: 1.05rem; }
-.chart-sub { color: var(--muted); font-size: .87rem; margin-top: .2rem; }
-
-.bars { margin-top: 1.6rem; display: flex; flex-direction: column; gap: 2px; }
-.bar-row { display: grid; grid-template-columns: 104px 1fr; align-items: center; gap: .85rem; padding: .3rem 0; border-radius: 6px; }
-.bar-row:hover { background: color-mix(in srgb, var(--accent) 6%, transparent); }
-.bar-name { font-size: .9rem; color: var(--ink-2); text-align: right; }
-.bar-track { position: relative; display: flex; align-items: center; gap: .6rem; }
-.bar-fill {
-  height: 22px; background: var(--accent);
-  border-radius: 0 4px 4px 0;   /* 4px rounded data-end, square at baseline */
-  min-width: 2px;
-}
-.bar-val { font-size: .88rem; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
-.axis { margin-top: 1rem; padding-left: calc(104px + .85rem); border-top: 1px solid var(--grid); display: flex; justify-content: space-between; }
-.axis span { font-size: .75rem; color: var(--muted); font-variant-numeric: tabular-nums; padding-top: .35rem; }
-
-.toggle { margin-top: 1.4rem; display: flex; gap: .5rem; align-items: center; }
-.toggle button {
-  font: inherit; font-size: .82rem; padding: .35rem .7rem; border-radius: 7px; cursor: pointer;
-  border: 1px solid var(--border); background: transparent; color: var(--ink-2);
-}
-.toggle button[aria-pressed="true"] { background: var(--raised); color: var(--ink); border-color: var(--baseline); }
-
-table { width: 100%; border-collapse: collapse; margin-top: 1.2rem; font-size: .9rem; }
-th, td { text-align: right; padding: .55rem .6rem; border-bottom: 1px solid var(--grid); font-variant-numeric: tabular-nums; }
-th:first-child, td:first-child { text-align: left; font-variant-numeric: normal; }
-th { color: var(--muted); font-weight: 600; font-size: .8rem; }
-tfoot td { font-weight: 650; border-bottom: none; }
-[hidden] { display: none !important; }
-
-/* ---------- sources ---------- */
-.src-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1rem; margin-top: 1.4rem; }
-.src { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.1rem 1.2rem; }
-.src .n { font-size: 1.6rem; font-weight: 650; letter-spacing: -.02em; }
-.src .t { font-size: .92rem; color: var(--ink-2); margin-top: .25rem; }
-.src .g { font-size: .8rem; color: var(--muted); margin-top: .5rem; }
-.meter { height: 4px; border-radius: 999px; background: var(--accent-soft); margin-top: .9rem; overflow: hidden; }
-.meter i { display: block; height: 100%; background: var(--accent); border-radius: 999px; }
-
-/* ---------- caveat ---------- */
-.caveat { border-left: 3px solid var(--accent); background: color-mix(in srgb, var(--accent) 6%, transparent); padding: 1.1rem 1.3rem; border-radius: 0 10px 10px 0; margin-top: 2rem; }
-.caveat h3 { font-size: 1rem; }
-.caveat p, .caveat li { color: var(--ink-2); font-size: .93rem; }
-.caveat ul { margin: .6rem 0 0; padding-left: 1.1rem; }
-.caveat li { margin-top: .2rem; }
-
-footer { padding: 3rem 0; color: var(--muted); font-size: .88rem; border-top: 1px solid var(--border); }
-</style>
+<meta property="og:url" content="https://cricketbailguard.org">
+<link rel="canonical" href="https://cricketbailguard.org">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<nav class="nav">
-  <div class="wrap nav-in">
-    <a class="brand" href="#top">
-      <svg class="brand-mark" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <rect x="3" y="7" width="2.4" height="14" rx="1" fill="currentColor"/>
-        <rect x="10.8" y="7" width="2.4" height="14" rx="1" fill="currentColor"/>
-        <rect x="18.6" y="7" width="2.4" height="14" rx="1" fill="currentColor"/>
-        <path d="M3 5.2 Q12 1.4 21 5.2" stroke="#2a78d6" stroke-width="2.1" stroke-linecap="round" fill="none"/>
-      </svg>
-      Bail Guard
-    </a>
-    <a class="navlink" href="#how">How it works</a>
-    <a class="navlink" href="#data">The data</a>
-    <a class="navlink" href="#build">Build one</a>
-    <a class="navlink" href="#open">Open &amp; free</a>
-    <button class="theme-btn" id="themeBtn" aria-label="Toggle dark mode">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
-    </button>
+<nav class="nav"><div class="wrap nav-in">
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <rect x="3" y="7" width="2.4" height="14" rx="1" fill="currentColor"/>
+      <rect x="10.8" y="7" width="2.4" height="14" rx="1" fill="currentColor"/>
+      <rect x="18.6" y="7" width="2.4" height="14" rx="1" fill="currentColor"/>
+      <path d="M3 5.2 Q12 1.4 21 5.2" stroke="var(--icon)" stroke-width="2.1" stroke-linecap="round" fill="none"/>
+    </svg><span>Bail Guard</span></a>
+  <a class="navlink" href="index.html" aria-current="page">Home</a>
+  <a class="navlink" href="story.html">Our story</a>
+  <a class="navlink" href="get-one.html">Get involved</a>
+  <a class="navlink" href="contributors.html">Contributors</a>
+  <button class="theme-btn" id="themeBtn" aria-label="Toggle dark mode">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+  </button>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+  <span class="eyebrow">A free, open safety device for cricket</span>
+  <h1 class="vision">Flying bail injuries, <em>never again.</em></h1>
+  <p class="lede">
+    A bail guard is a small device that tethers the bails on a <b>cricket</b> wicket.
+    They still lift and fall normally, they just cannot fly. It fits the stumps
+    you already own, costs a few dollars, and the design is published free for
+    anyone to build.
+  </p>
+
+  <div class="stats">
+    <div class="stat"><div class="v" id="heroFig">2,582</div><div class="l">bail dislodging dismissals</div><div class="n">every one a moment a guard engages</div></div>
+    <div class="stat"><div class="v">491</div><div class="l">games counted</div><div class="n">January to August 2026</div></div>
+    <div class="stat"><div class="v">5.3</div><div class="l">times the bails come off</div><div class="n">in an average game, a lower bound</div></div>
   </div>
-</nav>
 
-<div id="top"></div>
+  <div class="backers">
+    <p class="cap">Used in games</p>
+    <p style="color:var(--ink-2);font-size:.93rem;max-width:56ch;margin:.5rem auto 0">These clubs and leagues chose to lead on player and umpire safety, and let the device be tested in real, competitive matches.</p>
+    <div class="logos">
+      <span class="logo"><b>Dallas Cricket League</b><i>Publicly backed the initiative</i></span>
+      <span class="logo"><b>Grand Prairie Cricket Club</b><i>Guards fitted on both grounds</i></span>
+      <span class="logo"><b>All Stars Frisco Cricket Academy</b><i>Early trials</i></span>
+      <span class="logo"><b>USA Hub, Dallas</b><i>Adopting for the fall league</i></span>
+    </div>
+  </div>
+</div></header>
 
-<!-- ============ HERO ============ -->
-<header class="hero">
-  <div class="wrap hero-grid">
+<!-- intro split: what it is, and the 2 minute video -->
+<section class="band"><div class="wrap split">
+  <div>
+    <div class="diagram">
+      <img src="images/bailguard-parts.jpg" width="1000" height="1077"
+           alt="Labelled diagram of a bail guard fitted to a wicket, showing O-rings on the bails, a waxed polyester tether, a top stopper, the silicone collar, and a bottom stopper.">
+    </div>
+    <p class="cap">Four inexpensive parts: collar, tether, O-rings and stoppers. Retrofits on existing stumps. Nothing is drilled and nothing is modified.</p>
+  </div>
+  <div>
+    <div class="video"><iframe src="https://www.youtube-nocookie.com/embed/xzF2togtwVc" title="Bail Guard, two minute overview" allow="encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe></div>
+    <p class="cap">Two minutes with Aashi and Anish on why a flying bail is far more dangerous than it looks, and how four cheap parts fix it.</p>
+  </div>
+</div></section>
+
+<!-- 01 THE PROBLEM -->
+<section id="problem"><div class="wrap">
+  <div class="divider"><span class="num">01</span><span class="name">The problem</span><span class="sub">Why this matters</span></div>
+  <div class="sec-head center">
+    <h2>Flying bails can cause severe injuries</h2>
+    <p>Bails are small, hard, and leave the stumps at speed, at head height for the people standing closest. These are not hypothetical cases.</p>
+  </div>
+
+  <div class="hits">
+    <div class="hit"><b><a href="https://www.espncricinfo.com/story/south-africa-in-england-2012-eye-injury-ends-mark-boucher-s-career-571732" target="_blank" rel="noopener">Mark Boucher</a></b><span>South Africa's wicketkeeper. In 2012 a bail flew into his left eye. He lost the lens, iris and pupil, and had to retire immediately.</span></div>
+    <div class="hit"><b><a href="https://www.espncricinfo.com/cricketers/paul-downton-11931" target="_blank" rel="noopener">Paul Downton</a></b><span>England wicketkeeper. A bail struck his eye in 1990 and partly shattered the lens. The resulting loss of depth perception ended his career.</span></div>
+    <div class="hit"><b><a href="https://www.indiatoday.in/sports/cricket/story/mahendra-singh-dhoni-bail-eye-injury-freak-accident-mark-boucher-zimbabwe-t20-harare-15753-2016-06-23" target="_blank" rel="noopener">MS Dhoni</a></b><span><b>While batting</b>, struck near the eye by a bail against Zimbabwe in 2016, described at the time as a lucky escape.</span></div>
+    <div class="hit"><b><a href="https://sports.ndtv.com/cricket/sri-lanka-vs-australia-galle-test-flying-bail-hits-david-warner-in-the-crotch-after-sl-batter-is-bowled-3117869" target="_blank" rel="noopener">David Warner</a></b><span>Hit by a flying bail <b>while fielding close in</b>, during a Test at Galle.</span></div>
+    <div class="hit"><b><a href="https://www.skynews.com.au/australia-news/sport/fox-sports-presenter-mark-howard-suffers-scare-after-being-rushed-to-hospital-following-freak-injury/news-story/bbd3838be7185d55d9875c0960326d07" target="_blank" rel="noopener">Mark Howard</a></b><span>Broadcaster, hospitalised after being struck in a freak bail incident.</span></div>
+  </div>
+
+  <div class="sec-head center" style="margin-top:2.6rem;margin-bottom:0">
+    <h3 style="font-size:1.25rem">7 personas are in range</h3>
+    <p style="font-size:.95rem">Up to half the field is in the firing line. Every single ball.</p>
+  </div>
+  <div class="who">
+    <div><b>Wicketkeeper</b>Closest of all</div>
+    <div><b>Batter</b>Turning into the stumps</div>
+    <div><b>Close in fielders</b>Silly point, short leg</div>
+    <div><b>Bowler</b>Backing up for throws</div>
+    <div><b>Infielders</b>Receiving at the stumps</div>
+    <div><b>Non striker</b>Straight drives, run outs</div>
+    <div><b>Straight umpire</b>Directly in line</div>
+  </div>
+
+  <div class="caveat">
+    <h3>Children are the most exposed</h3>
+    <p>A younger player's eyeline is lower and closer to the bails, reactions are still developing, and softer tissue and bone means an impact does more damage. Most youth cricket is played without any eye protection at all.</p>
+  </div>
+</div></section>
+
+
+<!-- 02 THE LAWS -->
+<section class="band" id="law"><div class="wrap">
+  <div class="divider"><span class="num">02</span><span class="name">The Laws</span><span class="sub">Already permitted</span></div>
+  <div class="sec-head center">
+    <h2>The Laws already allow this</h2>
+    <p>This is not a proposal to change cricket. In 2017 the MCC wrote a provision into the Laws specifically for devices like this one.</p>
+  </div>
+  <div class="law narrow">
+    <div class="law-tag">MCC Law 8.3.4, effective 1 October 2017</div>
+    <blockquote>&ldquo;Devices aimed at protecting player safety by limiting the distance that a bail can travel off the stumps will be allowed, subject to the approval of the Governing Body for the match and the Ground Authority.&rdquo;</blockquote>
+    <cite>Laws of Cricket, 2017 Code, 3rd Edition 2022. Marylebone Cricket Club. <a href="https://www.espncricinfo.com/story/mcc-amends-laws-to-protect-wicketkeepers-from-flying-bails-1091751" target="_blank" rel="noopener">ESPNcricinfo report</a></cite>
+  </div>
+  <p class="narrow" style="margin-top:1.3rem;color:var(--ink-2)">
+    A bail guard is exactly the device that clause describes. Using one needs no law change and no special dispensation, only the agreement of your league and your ground, which the Law already anticipates.
+  </p>
+</div></section>
+
+
+<!-- 03 OPEN AND FREE -->
+<section id="open"><div class="wrap">
+  <div class="divider"><span class="num">03</span><span class="name">Open and free</span><span class="sub">Published, not patented</span></div>
+  <div class="sec-head center">
+    <h2>Published, not patented</h2>
+  </div>
+  <div class="narrow" style="color:var(--ink-2);display:grid;gap:1rem">
+    <p>
+      We had something patentable and chose to publish it instead. The
+      <a href="https://doi.org/10.5281/zenodo.17284396" target="_blank" rel="noopener">full design is archived on Zenodo</a>
+      as a defensive publication, first released in October 2025, under a Creative
+      Commons Attribution licence. That makes it prior art, so the mechanism stays
+      permanently free for anyone to build, sell or improve, and nobody can patent
+      it out from under the game later.
+    </p>
+    <p>
+      The deeper engineering questions and alternate designs considered are
+      answered in the <a href="https://zenodo.org/records/18646120/files/Supplemental-Technical-FAQ-Bail-Mass-and-Collar-Design.pdf?download=1" target="_blank" rel="noopener">supplemental technical FAQ</a>.
+    </p>
+    <p>
+      Every field trial number on this page can be reproduced. The scorecard
+      counts, the scrapers that produced them and the per match reports are all in
+      the <a href="https://github.com/anishanup/cricket-bail-safety-trial-tools" target="_blank" rel="noopener">field trial repository on GitHub</a>.
+    </p>
+  </div>
+</div></section>
+
+
+<!-- 04 START HERE -->
+<section class="band" id="start"><div class="wrap">
+  <div class="divider"><span class="num">04</span><span class="name">Start here</span><span class="sub">A guided path, in order</span></div>
+  <div class="sec-head center">
+    <h2>Everything, in order</h2>
+    <p>Two minutes gets you the idea. Ten gets you the evidence. Work down the list as far as you want to go.</p>
+  </div>
+  <div class="journey">
+    <a class="step" href="https://www.youtube.com/watch?v=xzF2togtwVc" target="_blank" rel="noopener">
+      <span class="n">1</span><span class="body"><b>Watch the two minute video</b><span>The fastest way to understand what a bail guard is</span></span><span class="meta">2 min</span></a>
+    <a class="step" href="https://c.org/RhrhCWKLvc" target="_blank" rel="noopener">
+      <span class="n">2</span><span class="body"><b>Support the initiative</b><span>Sign the petition asking cricket's governing bodies to review it</span></span><span class="meta">1 min</span></a>
+    <a class="step" href="https://docs.google.com/presentation/d/136xSsMM0RMuuDFrCSybQAT8F4PuwABc4/edit" target="_blank" rel="noopener">
+      <span class="n">3</span><span class="body"><b>Read the presentation for leagues</b><span>The full case, from the injuries to the design to the trials</span></span><span class="meta">Slides</span></a>
+    <a class="step" href="https://drive.google.com/file/d/1ZkjBxj3qITr_iui1apXLaLAND04-oaC-/view" target="_blank" rel="noopener">
+      <span class="n">4</span><span class="body"><b>See how one is set up</b><span>A single printable page you can hand to a club</span></span><span class="meta">PDF</span></a>
+    <a class="step" href="https://www.youtube.com/playlist?list=PLcYYPWle7j_Dykebkq_3pMlpxEiskwJOy" target="_blank" rel="noopener">
+      <span class="n">5</span><span class="body"><b>Go deeper on the design</b><span>All about bail guards, the full video playlist</span></span><span class="meta">Playlist</span></a>
+    <a class="step" href="https://www.youtube.com/playlist?list=PLcYYPWle7j_DAocfHTG9aT0MmcTBm5-Ny" target="_blank" rel="noopener">
+      <span class="n">6</span><span class="body"><b>Watch it work in real matches</b><span>Highlights from competitive games, not staged tests</span></span><span class="meta">Playlist</span></a>
+    <a class="step" href="https://doi.org/10.5281/zenodo.17284396" target="_blank" rel="noopener">
+      <span class="n">7</span><span class="body"><b>Read the open design publication</b><span>The full disclosure on Zenodo, with a DOI. Always the latest version</span></span><span class="meta">Zenodo</span></a>
+    <a class="step" href="https://zenodo.org/records/18646120/files/Supplemental-Technical-FAQ-Bail-Mass-and-Collar-Design.pdf?download=1" target="_blank" rel="noopener">
+      <span class="n">8</span><span class="body"><b>Check the engineering answers</b><span>Bail mass, collar design, and the alternatives we rejected</span></span><span class="meta">PDF</span></a>
+    <a class="step" href="https://github.com/anishanup/cricket-bail-safety-trial-tools" target="_blank" rel="noopener">
+      <span class="n">9</span><span class="body"><b>Audit the field trial data</b><span>Every count, and the tools that produced them. Reproduce it yourself</span></span><span class="meta">GitHub</span></a>
+    <a class="step" href="https://starlocalmedia.com/friscoenterprise/news/frisco-isd-siblings-develop-free-cricket-injury-solution/article_9e53f62a-6120-4438-b615-b2d9650d569f.html" target="_blank" rel="noopener">
+      <span class="n">10</span><span class="body"><b>Read the news coverage</b><span>Star Local Media, Frisco Enterprise</span></span><span class="meta">Article</span></a>
+    <a class="step" href="https://drive.google.com/file/d/1TX1CKEmomU3Qqo9ijP7NL155qu-osBJl/view" target="_blank" rel="noopener">
+      <span class="n">11</span><span class="body"><b>Make a package for your league</b><span>How to assemble kits in bulk</span></span><span class="meta">PDF</span></a>
+    <div class="step" style="cursor:default">
+      <span class="n">12</span><span class="body"><b>Additional reference material</b><span>Everything else, for anyone who wants the whole record</span></span><span class="meta">Misc</span></div>
+    <div class="substeps">
+      <a href="https://drive.google.com/file/d/1oVQVN1WY7dx6SvYWuCzHR1Z85Qlw31KU/view" target="_blank" rel="noopener">The presentation as a PDF, easier to share</a>
+      <a href="https://www.youtube.com/watch?v=PeISNg5_usY" target="_blank" rel="noopener">The full explainer video</a>
+      <a href="https://youtu.be/SwD8HJeOaq8" target="_blank" rel="noopener">NTCA Banquet, February 2026</a>
+      <a href="story.html">Our story: 250 years of the wicket, in photos</a>
+      <a href="contributors.html">Everyone who helped make this real</a>
+    </div>
+  </div>
+</div></section>
+
+
+<!-- 05 THE DATA -->
+<section id="data"><div class="wrap">
+  <div class="divider"><span class="num">05</span><span class="name">The data</span><span class="sub">491 games counted</span></div>
+  <div class="sec-head center">
+    <h2>How often bails come off</h2>
+    <p>Every dismissal below physically dislodges the bails, the exact moment a guard is engaged. Counted from official league scorecards, not estimated.</p>
+  </div>
+
+  <div class="card">
+    <div class="chart-title">Bail dislodging dismissals by type</div>
+    <div class="chart-sub">491 games, 18 January to 9 August 2026, official scorecards</div>
+    <div id="vDonut">
+      <div class="donut-wrap">
+        <svg class="donut" viewBox="0 0 200 200" role="img" aria-label="Donut chart of bail dislodging dismissals by type">
+          <g transform="rotate(-90 100 100)" id="donutG"></g>
+          <text x="100" y="96" text-anchor="middle" font-size="25" font-weight="680" fill="var(--ink)" letter-spacing="-1">2,582</text>
+          <text x="100" y="116" text-anchor="middle" font-size="10" fill="var(--muted)">total</text>
+        </svg>
+        <div class="legend" id="legend"></div>
+      </div>
+    </div>
+    <div id="vBar" hidden>
+      <div class="bars" id="bars"></div>
+      <div class="axis"><span>0</span><span>1,000</span><span>2,000</span></div>
+    </div>
+    <table id="vTable" hidden>
+      <thead><tr><th>Dismissal type</th><th>Count</th><th>Share</th></tr></thead>
+      <tbody id="tbody"></tbody>
+      <tfoot><tr><td>Total</td><td>2,582</td><td>100%</td></tr></tfoot>
+    </table>
+    <div class="toggle" role="group" aria-label="View as">
+      <button id="bDonut" aria-pressed="true">Donut</button>
+      <button id="bBar" aria-pressed="false">Bar</button>
+      <button id="bTable" aria-pressed="false">Table</button>
+    </div>
+    <p class="cap" style="margin-top:.85rem">Hit wicket is 0.4% of the total, a real but very thin slice. The bar and table views show it clearly.</p>
+  </div>
+
+  <div class="caveat">
+    <h3>This is a lower bound, deliberately</h3>
+    <p>These counts come only from <em>completed dismissals</em> on the scorecard. They do not capture the many other times the bails are dislodged:</p>
+    <ul>
+      <li>Run out and stumping <em>attempts</em> where the batter was not out</li>
+      <li>A bowled or hit wicket off a no ball</li>
+      <li>Any other ball that hits the stumps without a wicket being given</li>
+    </ul>
+    <p style="margin-top:.65rem">The real number is higher. We count what can be verified from official records, and we make no claim that the device prevented any particular injury, only how often it would be engaged.</p>
+  </div>
+</div></section>
+
+
+<!-- 06 SUPPORT -->
+<section class="band" id="petition"><div class="wrap">
+  <div class="divider"><span class="num">06</span><span class="name">Support it</span><span class="sub">Each signature helps</span></div>
+  <div class="card petition">
+    <div class="qr"><img src="images/petition-qr.svg" width="150" height="150" alt="QR code linking to the bail guard petition"></div>
     <div>
-      <span class="eyebrow">Open design · free to build</span>
-      <h1>Cricket bails shouldn't become projectiles.</h1>
-      <p class="lede">
-        A bail guard is a simple tether that lets the bails lift normally, then
-        stops them becoming projectiles. It retrofits any wicket, costs very
-        little, and the design is published free for anyone to use.
+      <h2 style="font-size:clamp(1.4rem,2.6vw,1.85rem)">Help get this in front of the game</h2>
+      <p style="color:var(--ink-2);margin-top:.7rem;max-width:52ch">
+        We are asking cricket's governing bodies to review the bail guard, and
+        local leagues to try it. Support this initiative.
       </p>
-      <p class="byline">A project by <strong>Aashi Anup</strong> and <strong>Anish Anup</strong></p>
-      <div class="cta-row">
-        <a class="btn btn-primary" href="#data">See the field data</a>
-        <a class="btn btn-ghost" href="#build">Build one</a>
-      </div>
-    </div>
-    <div>
-      <div class="video">
-        <iframe src="https://www.youtube-nocookie.com/embed/xzF2togtwVc"
-                title="Bail Guard — 2 minute overview"
-                allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture"
-                referrerpolicy="strict-origin-when-cross-origin"
-                allowfullscreen loading="lazy"></iframe>
-      </div>
-      <p class="video-cap">Two-minute overview.</p>
+      <p style="margin-top:1.2rem;display:flex;gap:.6rem;flex-wrap:wrap">
+        <a class="btn btn-primary" href="https://c.org/RhrhCWKLvc" target="_blank" rel="noopener">Support this initiative</a>
+        <a class="btn btn-ghost" id="shareWa" href="#" target="_blank" rel="noopener">Share on WhatsApp</a>
+        <button class="btn btn-ghost" id="copyLink" type="button">Copy link</button>
+      </p>
+      <p style="margin-top:.8rem;font-size:.9rem;color:var(--muted)">Share it with the cricket lovers you know. Most people have no idea this is a solved problem.</p>
     </div>
   </div>
-</header>
+</div></section>
 
-<!-- ============ DATA ============ -->
-<section class="band" id="data">
-  <div class="wrap">
 
-    <div class="figure-row">
-      <div>
-        <div class="hero-fig" id="heroFig">0</div>
-        <p class="hero-fig-label">recorded moments a bail guard would have been engaged, across 491 games.</p>
-      </div>
-      <div class="tiles">
-        <div class="tile"><div class="t-label">Games counted</div><div class="t-value">491</div><div class="t-note">Jan – Aug 2026</div></div>
-        <div class="tile"><div class="t-label">Per game</div><div class="t-value">5.3</div><div class="t-note">average</div></div>
-        <div class="tile"><div class="t-label">Leagues</div><div class="t-value">3</div><div class="t-note">adult, youth, assoc.</div></div>
-        <div class="tile"><div class="t-label">On guarded grounds</div><div class="t-value">15</div><div class="t-note">games, device fitted</div></div>
-      </div>
-    </div>
+<footer><div class="wrap">
+  <p>An open safety project from Frisco, Texas. Design published under CC BY 4.0.
+     <a href="contributors.html">Contributors</a> &middot;
+     <a href="story.html">Our story</a> &middot;
+     <a href="get-one.html">Get involved</a></p>
+  <p style="margin-top:.5rem">This project sells nothing, asserts no performance claims, and proposes no change to the Laws of Cricket.</p>
+  <p style="margin-top:.5rem">Data last updated 9 August 2026.</p>
+</div></footer>
 
-    <div class="sec-head" style="margin-top:3.5rem">
-      <div class="kicker">What the scorecards show</div>
-      <h2>How often the bails actually come off</h2>
-      <p>
-        Every dismissal below physically dislodges the bails — the exact moment a
-        guard is engaged. Counted from official league scorecards, not estimated.
-      </p>
-    </div>
-
-    <div class="card">
-      <div class="chart-title">Bail-dislodging dismissals by type</div>
-      <div class="chart-sub">491 games · Jan 18 – Aug 9, 2026 · official scorecards</div>
-
-      <div id="chartView">
-        <div class="bars" id="bars"></div>
-        <div class="axis"><span>0</span><span>1,000</span><span>2,000</span></div>
-      </div>
-
-      <table id="tableView" hidden>
-        <thead><tr><th>Dismissal type</th><th>Count</th><th>Share</th></tr></thead>
-        <tbody id="tbody"></tbody>
-        <tfoot><tr><td>Total</td><td>2,582</td><td>100%</td></tr></tfoot>
-      </table>
-
-      <div class="toggle" role="group" aria-label="View as">
-        <button id="btnChart" aria-pressed="true">Chart</button>
-        <button id="btnTable" aria-pressed="false">Table</button>
-      </div>
-    </div>
-
-    <div class="sec-head" style="margin-top:3.5rem">
-      <div class="kicker">Where the data comes from</div>
-      <h2>Four independent sources</h2>
-    </div>
-    <div class="src-grid" id="srcGrid"></div>
-
-    <div class="caveat">
-      <h3>This is a lower bound — deliberately</h3>
-      <p>
-        These counts come only from <em>completed dismissals</em> on the scorecard.
-        They do not capture the many other times the bails are dislodged:
-      </p>
-      <ul>
-        <li>Run-out and stumping <em>attempts</em> where the batter was not out</li>
-        <li>A bowled or hit-wicket off a no-ball</li>
-        <li>Any other ball that hits the stumps without a wicket being given</li>
-      </ul>
-      <p style="margin-top:.7rem">
-        The real number is therefore higher. We count what we can verify from
-        official records, and we do not claim the device prevents a given injury —
-        only how often it would be engaged.
-      </p>
-    </div>
-
-  </div>
-</section>
-
-<footer>
-  <div class="wrap">
-    <p><strong style="color:var(--ink-2)">Prototype</strong> — hero and data sections only. Remaining sections per the plan: the problem, 250 years of the wicket, how it works, real matches, open &amp; free, build one, the people, recognition, support.</p>
-    <p style="margin-top:.6rem">A project by Aashi Anup and Anish Anup.</p>
-  </div>
-</footer>
-
-<script>
-/* ---------- theme toggle ---------- */
-const root = document.documentElement;
-document.getElementById('themeBtn').addEventListener('click', () => {
-  const dark = matchMedia('(prefers-color-scheme: dark)').matches;
-  const cur = root.getAttribute('data-theme') || (dark ? 'dark' : 'light');
-  root.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
-});
-
-/* ---------- data (mirrors bailguard-totals.json) ---------- */
-const TOTAL = 2582;
-const DISMISSALS = [
-  { name: 'Bowled',     value: 1722 },
-  { name: 'Run out',    value: 728  },
-  { name: 'Stumped',    value: 122  },
-  { name: 'Hit wicket', value: 10   },
-];
-const SOURCES = [
-  { n: 2132, t: 'Dallas Cricket League', g: '400 games · adult league scorecards' },
-  { n: 388,  t: 'Dallas Youth Cricket League', g: '72 games · youth league scorecards' },
-  { n: 51,   t: 'North Texas Cricket Association', g: '15 games · played on guarded grounds' },
-  { n: 11,   t: 'Our own field trials', g: '4 games · counted from video, a floor' },
-];
-
-/* ---------- bar chart ---------- */
-const SCALE_MAX = 2000;               // axis runs 0 → 2,000
-const bars = document.getElementById('bars');
-DISMISSALS.forEach(d => {
-  const row = document.createElement('div');
-  row.className = 'bar-row';
-  row.title = `${d.name}: ${d.value.toLocaleString()} (${(d.value/TOTAL*100).toFixed(1)}% of all dislodgements)`;
-  row.innerHTML =
-    `<div class="bar-name">${d.name}</div>
-     <div class="bar-track">
-       <div class="bar-fill" style="width:0"></div>
-       <div class="bar-val">${d.value.toLocaleString()}</div>
-     </div>`;
-  bars.appendChild(row);
-  const f = row.querySelector('.bar-fill');
-  const target = (d.value / SCALE_MAX * 100) + '%';
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    f.style.width = target;                       // no animation, correct value
-  } else {
-    // setTimeout (not rAF) so the bar still reaches full width in a
-    // background tab, where rAF is paused and the chart would stay empty.
-    setTimeout(() => {
-      f.style.transition = 'width .9s cubic-bezier(.22,.9,.3,1)';
-      f.style.width = target;
-    }, 30);
-  }
-});
-
-/* ---------- table view ---------- */
-document.getElementById('tbody').innerHTML = DISMISSALS.map(d =>
-  `<tr><td>${d.name}</td><td>${d.value.toLocaleString()}</td><td>${(d.value/TOTAL*100).toFixed(1)}%</td></tr>`
-).join('');
-const bc = document.getElementById('btnChart'), bt = document.getElementById('btnTable');
-const cv = document.getElementById('chartView'), tv = document.getElementById('tableView');
-function view(isChart) {
-  cv.hidden = !isChart; tv.hidden = isChart;
-  bc.setAttribute('aria-pressed', String(isChart));
-  bt.setAttribute('aria-pressed', String(!isChart));
-}
-bc.onclick = () => view(true);
-bt.onclick = () => view(false);
-
-/* ---------- source cards ---------- */
-document.getElementById('srcGrid').innerHTML = SOURCES.map(s => `
-  <div class="src">
-    <div class="n">${s.n.toLocaleString()}</div>
-    <div class="t">${s.t}</div>
-    <div class="g">${s.g}</div>
-    <div class="meter"><i style="width:${(s.n/TOTAL*100).toFixed(1)}%"></i></div>
-  </div>`).join('');
-
-/* ---------- hero figure count-up ---------- */
-const fig = document.getElementById('heroFig');
-fig.textContent = TOTAL.toLocaleString();   // correct value by default; animation is enhancement only
-if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  let started = false;
-  new IntersectionObserver((entries) => {
-    if (!entries[0].isIntersecting || started) return;
-    started = true;
-    const t0 = Date.now(), dur = 1400;
-    // setInterval, not rAF: a paused rAF in a background tab would otherwise
-    // leave the number frozen at 0.
-    const id = setInterval(() => {
-      const p = Math.min(1, (Date.now() - t0) / dur);
-      fig.textContent = Math.round(TOTAL * (1 - Math.pow(1 - p, 3))).toLocaleString();
-      if (p >= 1) clearInterval(id);
-    }, 16);
-  }, { threshold: .4 }).observe(fig);
-}
-</script>
+<script src="app.js"></script>
 </body>
 </html>
