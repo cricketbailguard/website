@@ -42,6 +42,7 @@ p{margin:0}
 a{color:var(--accent)}
 img{max-width:100%;height:auto;display:block}
 .wrap{width:min(1060px,100% - 3rem);margin-inline:auto}
+@media (max-width:620px){.wrap{width:min(1060px,100% - 2rem)}}
 .narrow{width:min(760px,100%);margin-inline:auto}
 section{padding:clamp(3.2rem,6vw,5rem) 0}
 .band{background:var(--surface);border-block:1px solid var(--border)}
@@ -171,15 +172,71 @@ tfoot td{font-weight:650;border-bottom:none}
 .step .body b{display:block;font-weight:620;font-size:1rem}
 .step .body span{display:block;font-size:.87rem;color:var(--ink-2);margin-top:.12rem}
 .step .meta{font-size:.75rem;font-weight:620;letter-spacing:.03em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+@media (max-width:560px){.step{grid-template-columns:auto 1fr}.step .meta{display:none}}
+.substeps{margin:.55rem 0 0 4.1rem;display:grid;gap:.3rem}
+.substeps a{font-size:.9rem;color:var(--ink-2);text-decoration:none;display:flex;gap:.5rem;align-items:baseline}
+.substeps a:hover{color:var(--accent)}
+.substeps a::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--baseline);flex:none;translate:0 -3px}
 
-/* nav has to fit four links plus the toggle on a narrow phone */
-@media (max-width:560px){
-  .wrap{width:min(1060px,100% - 2rem)}
-  .nav-in{gap:.55rem}
-  .navlink{font-size:.8rem}
-  .brand{font-size:.98rem;gap:.4rem}
-  .brand svg{width:22px;height:22px}
-  .theme-btn{width:32px;height:32px}
+/* petition */
+.petition{display:grid;grid-template-columns:auto 1fr;gap:clamp(1.2rem,3vw,2.2rem);align-items:center}
+@media (max-width:620px){.petition{grid-template-columns:1fr;text-align:center;justify-items:center}}
+.qr{width:150px;height:150px;background:#fff;border:1px solid var(--border);border-radius:12px;padding:9px;flex:none}
+.qr img{width:100%;height:100%}
+.actions{display:flex;gap:.55rem;align-items:center;flex-wrap:wrap;margin-top:1.2rem}
+.icon-btn{width:44px;height:44px;border-radius:10px;border:1px solid var(--border);background:var(--raised);color:var(--ink-2);display:grid;place-items:center;cursor:pointer;text-decoration:none;flex:none}
+.icon-btn:hover{border-color:var(--baseline);color:var(--ink)}
+.icon-btn svg{width:20px;height:20px}
+
+/* people */
+.people{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:.8rem;margin-top:1.4rem}
+.person{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:1rem 1.15rem}
+.person > b{display:block;font-weight:635;font-size:.97rem}
+.person > span{display:block;font-size:.85rem;color:var(--ink-2);margin-top:.25rem}
+.person span b{display:inline;font-size:inherit;font-weight:660}
+.person .role{display:inline-block;margin-top:.6rem;font-size:.72rem;font-weight:640;letter-spacing:.04em;text-transform:uppercase;padding:.16rem .5rem;border-radius:5px;background:color-mix(in srgb,var(--accent) 12%,transparent);color:var(--accent)}
+
+/* gallery */
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;margin-top:1.5rem}
+.shot{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.shot img{width:100%;aspect-ratio:4/3;object-fit:contain;background:#fff}
+.shot figcaption{padding:.75rem .95rem;font-size:.87rem;color:var(--ink-2)}
+
+footer{padding:2.8rem 0;color:var(--muted);font-size:.87rem;border-top:1px solid var(--border)}
+footer a{color:var(--ink-2)}
+.todo{display:none;background:#fff8e1;border:1px solid #e8cf8a;color:#5a4300;border-radius:10px;padding:.85rem 1.1rem;font-size:.86rem;margin-top:1.2rem}
+:root[data-theme="dark"] .todo{background:#2a2410;border-color:#5a4a1a;color:#e8cf8a}
+@media (prefers-color-scheme:dark){:root:where(:not([data-theme="light"])) .todo{background:#2a2410;border-color:#5a4a1a;color:#e8cf8a}}
+
+/* timeline (our story) */
+.tl{position:relative;margin-top:2rem;padding-left:2.1rem}
+.tl::before{content:'';position:absolute;left:8px;top:.5rem;bottom:.5rem;width:2px;background:var(--grid)}
+.tl-item{position:relative;padding-bottom:2.2rem}
+.tl-item::before{content:'';position:absolute;left:-2.1rem;top:.45rem;width:18px;height:18px;border-radius:50%;background:var(--surface);border:3px solid var(--baseline)}
+.tl-item.key::before{border-color:var(--icon);background:var(--icon)}
+.tl-when{font-size:.82rem;font-weight:670;letter-spacing:.03em;color:var(--icon)}
+.tl-item h2{font-size:1.12rem;margin-top:.3rem;font-weight:645}
+.tl-item p{color:var(--ink-2);font-size:.94rem;margin-top:.4rem;max-width:60ch}
+.tl-item figure{margin:.9rem 0 0;max-width:420px}
+.tl-item figure img{border-radius:11px;border:1px solid var(--border);background:#fff}
+.tl-item figcaption{font-size:.82rem;color:var(--muted);margin-top:.4rem}
+.fact{display:inline-block;margin-top:.6rem;font-size:.85rem;color:var(--ink-2);background:color-mix(in srgb,var(--icon) 12%,transparent);border:1px solid color-mix(in srgb,var(--icon) 30%,transparent);padding:.3rem .65rem;border-radius:7px}
+
+:root[data-draft] .todo{display:block}
+
+/* ---- mobile refinements ---- */
+@media (max-width:620px){
+  /* 2. equal width organisation cards */
+  .logos{display:grid;grid-template-columns:1fr;gap:.55rem}
+  .logo{width:100%;align-items:flex-start}
+  /* 4. injury rows stack cleanly instead of half wrapping */
+  .hit{flex-direction:column;gap:.3rem}
+  .hit span{min-width:0}
+  /* 5. personas in a single column, so no blank cell */
+  .who{grid-template-columns:1fr}
+  /* petition card actions stay tidy */
+  .actions{width:100%}
+  .actions .btn{flex:1}
 }
 
 
@@ -191,12 +248,11 @@ tfoot td{font-weight:650;border-bottom:none}
 
 /* ---- keyboard focus ----------------------------------------------------
    There were no focus styles at all, so tabbing through the site was
-   invisible. Uses :focus-visible so it shows for keyboard users without
-   ringing every mouse click. */
+   invisible. :focus-visible shows it for keyboard users without ringing
+   every mouse click. */
 :focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:4px}
-.btn:focus-visible,.icon-btn:focus-visible,.theme-btn:focus-visible,.step:focus-visible{outline-offset:2px}
+.btn:focus-visible,.icon-btn:focus-visible,.theme-btn:focus-visible,.step:focus-visible,.nav-toggle:focus-visible{outline-offset:2px}
 a:focus-visible{outline-offset:2px}
-/* older browsers without :focus-visible still get something */
 @supports not selector(:focus-visible){
   a:focus,button:focus{outline:3px solid var(--accent);outline-offset:3px}
 }
@@ -212,34 +268,13 @@ a:focus-visible{outline-offset:2px}
     transition-duration:.01ms !important;scroll-behavior:auto !important}
 }
 
-/* nav links need a tap target, not just a text box: the nav is 64px tall so
-   there is room to give them height without changing the type size */
-.navlink{display:inline-flex;align-items:center;min-height:44px;padding:0 .15rem}
-
-/* print: drop the furniture, keep the words and show link targets */
-@media print{
-  .nav,.theme-btn,.skip,.actions,.toggle,.qr,footer nav{display:none !important}
-  body{background:#fff;color:#000;font-size:11pt}
-  .wrap{width:100%}
-  a{color:#000;text-decoration:underline}
-  main a[href^="http"]::after{content:" (" attr(href) ")";font-size:9pt;color:#444}
-  .card,.person,.step,.law,.caveat,.logo{border:1px solid #bbb;break-inside:avoid}
-  .video,iframe{display:none}
-  section{padding:1.2rem 0;break-inside:avoid}
-}
-
-/* the last few interactive targets that sat a pixel or two under 24px */
-.brand{min-height:44px}
-.hit b a{display:inline-block;padding:.28rem 0}
-.substeps a{padding:.3rem 0}
-
 /* ---- navigation -------------------------------------------------------
-   Full links on desktop, where there is room and hiding them would only
-   cost discoverability. A labelled menu button below 780px, so the links
-   can be a readable size with a proper tap target instead of being
-   squeezed to 11px to fit. */
+   Full links on desktop, where there is room and hiding them would only cost
+   discoverability. A labelled menu button below 780px, so the links can be a
+   readable size with a real tap target instead of being squeezed to 11px. */
 .nav{position:relative}
 .nav-links{display:flex;align-items:center;gap:1.15rem}
+.navlink{display:inline-flex;align-items:center;min-height:44px;padding:0 .15rem}
 .nav-toggle{display:none;align-items:center;gap:.45rem;font:inherit;font-size:.92rem;font-weight:560;
   color:var(--ink);background:var(--raised);border:1px solid var(--border);
   border-radius:9px;padding:.5rem .8rem;min-height:44px;cursor:pointer}
@@ -247,23 +282,34 @@ a:focus-visible{outline-offset:2px}
 
 @media (max-width:780px){
   .nav-toggle{display:inline-flex}
-  .nav-links{
-    position:absolute;top:100%;left:0;right:0;
+  .nav-links{position:absolute;top:100%;left:0;right:0;
     flex-direction:column;align-items:stretch;gap:0;
     background:var(--plane);border-bottom:1px solid var(--border);
-    box-shadow:var(--shadow);padding:.4rem 0;
-    display:none;
-  }
+    box-shadow:var(--shadow);padding:.4rem 0;display:none}
   .nav[data-open="true"] .nav-links{display:flex}
-  .nav-links .navlink{
-    font-size:1rem;padding:.95rem clamp(1rem,5vw,1.5rem);min-height:52px;
-    border-bottom:1px solid var(--border);
-  }
+  .nav-links .navlink{font-size:1rem;padding:.95rem clamp(1rem,5vw,1.5rem);min-height:52px;
+    border-bottom:1px solid var(--border)}
   .nav-links .navlink:last-child{border-bottom:0}
   .nav-links .navlink[aria-current="page"]{color:var(--ink);background:color-mix(in srgb,var(--accent) 8%,transparent)}
 }
 @media (max-width:420px){
-  .brand span{font-size:.98rem}
-  .nav-toggle span{display:none}          /* icon only when space is tight */
+  .nav-toggle span{display:none}
   .nav-toggle{padding:.5rem;width:44px;justify-content:center}
+}
+
+/* the last few interactive targets that sat a pixel or two under 24px */
+.brand{min-height:44px}
+.hit b a{display:inline-block;padding:.28rem 0}
+.substeps a{padding:.3rem 0}
+
+/* print: drop the furniture, keep the words, show link targets */
+@media print{
+  .nav,.theme-btn,.skip,.actions,.toggle,.qr,.nav-toggle{display:none !important}
+  body{background:#fff;color:#000;font-size:11pt}
+  .wrap{width:100%}
+  a{color:#000;text-decoration:underline}
+  main a[href^="http"]::after{content:" (" attr(href) ")";font-size:9pt;color:#444}
+  .card,.person,.step,.law,.caveat,.logo,.tl-item{border-color:#bbb;break-inside:avoid}
+  .video,iframe{display:none}
+  section{padding:1.2rem 0}
 }
