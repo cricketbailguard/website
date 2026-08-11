@@ -1,0 +1,66 @@
+name: Refresh field trial data
+
+# The numbers on this site come from bailguard-totals.json in the trial repo,
+# which is regenerated whenever the scrapers run. This copies the latest version
+# in, so the site does not quietly go stale.
+#
+# Pull rather than push: both repos are public, so this needs no token.
+
+on:
+  schedule:
+    # 04:00 UTC Wednesday is 11pm Tuesday CDT (Mar to Nov, the cricket season)
+    # and 10pm Tuesday CST in winter. GitHub cron is UTC only and does not
+    # follow daylight saving, so one of the two has to shift by an hour.
+    - cron: "0 4 * * 3"
+  workflow_dispatch:           # and a "Run workflow" button
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-data
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch the latest totals
+        run: |
+          mkdir -p data
+          curl -fsSL --retry 3 --retry-delay 5 \
+            -o data/totals.new.json \
+            https://raw.githubusercontent.com/anishanup/cricket-bail-safety-trial-tools/main/bailguard-totals.json
+
+      - name: Check it looks like totals before trusting it
+        run: |
+          node -e '
+            const d = require("./data/totals.new.json");
+            const t = d && d.totals;
+            const need = ["games","bowled","stumped","run_out","hit_wicket","dislodgements"];
+            if (!t) { console.error("no totals object"); process.exit(1); }
+            for (const k of need) {
+              if (typeof t[k] !== "number") { console.error("missing or non-numeric: " + k); process.exit(1); }
+            }
+            if (t.games < 1 || t.dislodgements < 1) { console.error("zero counts, refusing"); process.exit(1); }
+            const sum = t.bowled + t.stumped + t.run_out + t.hit_wicket;
+            if (sum !== t.dislodgements) { console.error("parts do not sum to total: " + sum + " vs " + t.dislodgements); process.exit(1); }
+            console.log("ok: " + t.games + " games, " + t.dislodgements + " dislodgements, to " + d.data_to);
+          '
+          mv data/totals.new.json data/totals.json
+
+      - name: Commit only if something changed
+        run: |
+          if git diff --quiet -- data/totals.json; then
+            echo "No change to the totals."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/totals.json
+          git commit -m "Refresh field trial totals
+
+          Pulled from bailguard-totals.json in the trial repository."
+          git push

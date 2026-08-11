@@ -47,9 +47,9 @@
   </p>
 
   <div class="stats">
-    <div class="stat"><div class="v" id="heroFig">2,582</div><div class="l">bail dislodging dismissals</div><div class="n">every one a moment a guard engages</div></div>
-    <div class="stat"><div class="v">491</div><div class="l">games counted</div><div class="n">January to August 2026</div></div>
-    <div class="stat"><div class="v">5.3</div><div class="l">times the bails come off</div><div class="n">in an average game, a lower bound</div></div>
+    <div class="stat"><div class="v" id="heroFig" data-bg="dislodgements">2,582</div><div class="l">bail dislodging dismissals</div><div class="n">every one a moment a guard engages</div></div>
+    <div class="stat"><div class="v" data-bg="games">491</div><div class="l">games counted</div><div class="n" data-bg="months">January to August 2026</div></div>
+    <div class="stat"><div class="v" data-bg="perGame">5.3</div><div class="l">times the bails come off</div><div class="n">in an average game, a lower bound</div></div>
     <div class="stat"><div class="v">5</div><div class="l">clubs and leagues involved</div><div class="n">across North Texas</div></div>
   </div>
 
@@ -219,7 +219,7 @@
 
   <div class="card">
     <div class="chart-title">Bail dislodging dismissals by type</div>
-    <div class="chart-sub">491 games, 18 January to 9 August 2026, official scorecards</div>
+    <div class="chart-sub"><span data-bg="games">491</span> games, <span data-bg="range">18 January to 9 August 2026</span>, official scorecards</div>
     <div id="vDonut">
       <div class="donut-wrap">
         <svg class="donut" viewBox="0 0 200 200" role="img" aria-label="Donut chart of bail dislodging dismissals by type">
@@ -237,7 +237,7 @@
     <table id="vTable" hidden>
       <thead><tr><th>Dismissal type</th><th>Count</th><th>Share</th></tr></thead>
       <tbody id="tbody"></tbody>
-      <tfoot><tr><td>Total</td><td>2,582</td><td>100%</td></tr></tfoot>
+      <tfoot><tr><td>Total</td><td data-bg="dislodgements">2,582</td><td>100%</td></tr></tfoot>
     </table>
     <div class="toggle" role="group" aria-label="View as">
       <button id="bDonut" aria-pressed="true">Donut</button>
@@ -292,7 +292,7 @@
      <a href="story.html">Our story</a> &middot;
      <a href="get-one.html">Get involved</a></p>
   <p style="margin-top:.5rem">This project sells nothing, asserts no performance claims, and proposes no change to the Laws of Cricket.</p>
-  <p style="margin-top:.5rem">Data last updated 9 August 2026.</p>
+  <p style="margin-top:.5rem">Data last updated <span data-bg="updated">9 August 2026</span>.</p>
 </div></footer>
 
 <script src="app.js"></script>
