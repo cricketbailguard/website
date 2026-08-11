@@ -47,7 +47,11 @@ if (location.search.indexOf('draft') > -1) document.documentElement.setAttribute
     return MONTHS[x.m - 1] + ' to ' + MONTHS[y.m - 1] + ' ' + y.y;
   }
 
+  var heroTarget = FALLBACK.dislodgements;   // kept current so a late fetch retargets the count up
+  var animating = false;
+
   function bind(d) {
+    heroTarget = d.dislodgements;
     var values = {
       dislodgements: d.dislodgements.toLocaleString(),
       games: d.games.toLocaleString(),
@@ -59,6 +63,7 @@ if (location.search.indexOf('draft') > -1) document.documentElement.setAttribute
     Object.keys(values).forEach(function (k) {
       if (!values[k]) return;
       [].forEach.call(document.querySelectorAll('[data-bg="' + k + '"]'), function (el) {
+        if (el.id === 'heroFig' && animating) return;   // the count up owns this until it finishes
         el.textContent = values[k];
       });
     });
@@ -163,12 +168,16 @@ if (location.search.indexOf('draft') > -1) document.documentElement.setAttribute
     new IntersectionObserver(function (e) {
       if (!e[0].isIntersecting || done) return;
       done = true;
-      var target = parseInt(fig.textContent.replace(/[^0-9]/g, ''), 10) || 0;
+      animating = true;
       var t0 = Date.now(), dur = 1300;
       var id = setInterval(function () {
         var p = Math.min(1, (Date.now() - t0) / dur);
-        fig.textContent = Math.round(target * (1 - Math.pow(1 - p, 3))).toLocaleString();
-        if (p >= 1) clearInterval(id);
+        fig.textContent = Math.round(heroTarget * (1 - Math.pow(1 - p, 3))).toLocaleString();
+        if (p >= 1) {
+          clearInterval(id);
+          animating = false;
+          fig.textContent = heroTarget.toLocaleString();   // always land on the current figure
+        }
       }, 16);
     }, { threshold: .4 }).observe(fig);
   }
