@@ -1,0 +1,5 @@
+# Bail Guard, an open cricket safety project
+User-agent: *
+Allow: /
+
+Sitemap: https://cricketbailguard.org/sitemap.xml

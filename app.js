@@ -183,6 +183,43 @@ if (location.search.indexOf('draft') > -1) document.documentElement.setAttribute
   }
 })();
 
+/* mobile navigation */
+(function () {
+  var nav = document.querySelector('.nav');
+  var btn = document.getElementById('navToggle');
+  var panel = document.getElementById('navLinks');
+  if (!nav || !btn || !panel) return;
+
+  function setOpen(open) {
+    nav.setAttribute('data-open', String(open));
+    btn.setAttribute('aria-expanded', String(open));
+  }
+  setOpen(false);
+
+  btn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    setOpen(nav.getAttribute('data-open') !== 'true');
+  });
+
+  // a link closes it, so the panel never lingers over the page you asked for
+  panel.addEventListener('click', function (e) {
+    if (e.target.closest('a')) setOpen(false);
+  });
+
+  document.addEventListener('click', function (e) {
+    if (nav.getAttribute('data-open') === 'true' && !nav.contains(e.target)) setOpen(false);
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && nav.getAttribute('data-open') === 'true') { setOpen(false); btn.focus(); }
+  });
+
+  // if the window grows past the breakpoint, drop the open state
+  matchMedia('(min-width: 781px)').addEventListener('change', function (m) {
+    if (m.matches) setOpen(false);
+  });
+})();
+
 /* share controls on the petition card */
 (function () {
   var URL_ = 'https://cricketbailguard.org';
