@@ -261,3 +261,13 @@ footer a{color:var(--ink-2)}
   .brand svg{width:20px;height:20px}
   .theme-btn{width:28px;height:28px}
 }
+
+/* founders' account: two readable columns on wide screens rather than a
+   narrow ribbon with dead space beside it */
+.prose{color:var(--ink-2);font-size:.95rem;margin-top:1rem}
+.prose + .prose{margin-top:.9rem}
+@media (min-width:900px){
+  .prose-wrap{columns:2;column-gap:2.6rem}
+  .prose{margin-top:0;break-inside:avoid}
+  .prose + .prose{margin-top:.9rem}
+}
