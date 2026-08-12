@@ -66,7 +66,13 @@ section{padding:clamp(3.2rem,6vw,5rem) 0}
 
 /* hero */
 .hero{padding:clamp(2.8rem,6vw,4.2rem) 0 clamp(1.8rem,3vw,2.4rem);text-align:center}
-.eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-size:.77rem;font-weight:650;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,transparent);border:1px solid color-mix(in srgb,var(--accent) 24%,transparent);padding:.32rem .78rem;border-radius:999px}
+.eyebrow{display:inline-block;font-size:.88rem;font-weight:600;letter-spacing:.005em;color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,transparent);border:1px solid color-mix(in srgb,var(--accent) 24%,transparent);padding:.38rem .95rem;border-radius:999px;white-space:nowrap}
+@media (max-width:620px){
+  /* break at the comma rather than mid phrase: the comma stays visible so the
+     first line reads as continuing rather than as a standalone fragment */
+  .eyebrow{white-space:normal;line-height:1.4;text-align:center;padding:.5rem 1rem}
+  .eyebrow .eb-a,.eyebrow .eb-b{display:block}
+}
 .vision{font-size:clamp(2rem,4.5vw,3.3rem);font-weight:720;letter-spacing:-.038em;line-height:1.06;margin:1.1rem auto 0;text-wrap:balance}
 .vision em{font-style:normal;color:var(--accent)}
 .lede{font-size:clamp(1.02rem,1.6vw,1.18rem);color:var(--ink-2);max-width:60ch;margin:1.1rem auto 0}
