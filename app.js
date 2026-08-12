@@ -223,7 +223,7 @@ if (location.search.indexOf('draft') > -1) document.documentElement.setAttribute
 /* share controls on the petition card */
 (function () {
   var URL_ = 'https://cricketbailguard.org';
-  var MSG = 'Cricket bails fly off the stumps and have ended careers. A bail guard is a free, open fix that any club can make. Take a look: ';
+  var MSG = 'Cricket bails fly off the stumps and have ended careers. A bail guard is a simple fix, and the design is published free for any club to build. Take a look: ';
   var wa = document.getElementById('shareWa');
   if (wa) wa.href = 'https://wa.me/?text=' + encodeURIComponent(MSG + URL_);
   var copy = document.getElementById('copyLink');
