@@ -226,6 +226,9 @@ footer a{color:var(--ink-2)}
 .tl-item figure{margin:.9rem 0 0;max-width:420px}
 .tl-item figure img{border-radius:11px;border:1px solid var(--border);background:#fff}
 .tl-item figcaption{font-size:.82rem;color:var(--muted);margin-top:.4rem}
+.tl-item ul{color:var(--ink-2);font-size:.94rem;margin:.7rem 0 0;padding-left:1.15rem;max-width:60ch}
+.tl-item li{margin-top:.4rem}
+.tl-item li b{font-weight:640;color:var(--ink)}
 .fact{display:inline-block;margin-top:.6rem;font-size:.85rem;color:var(--ink-2);background:color-mix(in srgb,var(--icon) 12%,transparent);border:1px solid color-mix(in srgb,var(--icon) 30%,transparent);padding:.3rem .65rem;border-radius:7px}
 
 :root[data-draft] .todo{display:block}
@@ -257,6 +260,88 @@ footer a{color:var(--ink-2)}
    invisible. :focus-visible shows it for keyboard users without ringing
    every mouse click. */
 :focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:4px}
+
+
+/* ---- theme button ------------------------------------------------------
+   The button carries both icons and CSS decides which one shows, so it is
+   already correct on the first paint rather than after a script runs. It
+   shows what you will get: a moon while the page is light, a sun while it
+   is dark. */
+.theme-btn .sun{display:none}
+:root[data-theme="dark"] .theme-btn .moon{display:none}
+:root[data-theme="dark"] .theme-btn .sun{display:block}
+@media (prefers-color-scheme:dark){
+  :root:where(:not([data-theme="light"])) .theme-btn .moon{display:none}
+  :root:where(:not([data-theme="light"])) .theme-btn .sun{display:block}
+}
+
+/* ---- gallery page ------------------------------------------------------
+   The photographs were taken in order, so the page is a timeline rather than
+   a wall: a rail with a dated stage at each dot, and that stage's media
+   beside it. The media itself is a mix of portrait phone photographs,
+   landscape video and a full page flyer, so nothing is cropped to a common
+   shape and every item keeps its own proportions. */
+.gjump{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin-top:1.5rem}
+.gjump a{display:inline-flex;align-items:center;min-height:36px;padding:.35rem .8rem;border:1px solid var(--border);
+  background:var(--raised);border-radius:999px;color:var(--ink-2);text-decoration:none;font-size:.79rem;font-weight:620;letter-spacing:.02em}
+.gjump a:hover{border-color:var(--baseline);color:var(--ink)}
+
+.gtl{position:relative;margin-top:2.4rem;padding-left:2.1rem}
+.gtl::before{content:'';position:absolute;left:8px;top:.5rem;bottom:.5rem;width:2px;background:var(--grid)}
+.gstage{position:relative;padding-bottom:2.6rem;scroll-margin-top:5rem}
+.gstage::before{content:'';position:absolute;left:-2.1rem;top:.4rem;width:18px;height:18px;border-radius:50%;background:var(--surface);border:3px solid var(--baseline)}
+.gstage.key::before{border-color:var(--icon);background:var(--icon)}
+.gstage .when{display:block;font-size:.82rem;font-weight:670;letter-spacing:.03em;color:var(--icon)}
+.gstage h2{font-size:1.12rem;margin-top:.3rem;font-weight:645}
+.gstage > p{color:var(--ink-2);font-size:.94rem;margin-top:.45rem;max-width:62ch}
+
+/* auto-fill, not auto-fit: a stage holding one photograph should show it at
+   the same size as a stage holding four, rather than blowing it up to the
+   full width of the page */
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;align-items:start;margin-top:1.2rem}
+.gal figure{margin:0;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.gal img,.gal video{display:block;width:100%;height:auto}
+.gal video{background:#000}
+.gal .zoom{display:block;width:100%;padding:0;border:0;background:none;font:inherit;color:inherit;cursor:zoom-in}
+.gal figcaption{padding:.75rem .95rem;font-size:.86rem;color:var(--ink-2)}
+.gal figcaption a{color:var(--accent)}
+.gal .cap-who{display:block;margin-top:.45rem;font-size:.82rem;color:var(--muted)}
+
+/* where a photograph needs explaining rather than labelling, the explanation
+   runs alongside it instead of above it, and the figure keeps its own short
+   caption underneath where a caption belongs */
+.gsplit{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:1.5rem;align-items:start;margin-top:1.2rem}
+.gsplit .gal{grid-template-columns:1fr;margin-top:0}
+.gsplit .gnote{color:var(--ink-2);font-size:.94rem;max-width:62ch}
+.gsplit .gnote p + p{margin-top:.7rem}
+@media (max-width:700px){.gsplit{grid-template-columns:1fr;gap:1.1rem}}
+
+/* a video that lives on YouTube rather than in this repository. The still is
+   the real thumbnail, saved locally so the page loads nothing from Google
+   until the reader chooses to go there. */
+/* cards sharing a row match heights, so a two line summary next to a three
+   line one does not leave one card visibly short */
+.vlink{display:flex;flex-direction:column;align-self:stretch;background:var(--surface);
+  border:1px solid var(--border);border-radius:12px;overflow:hidden;text-decoration:none;color:inherit}
+.vlink:hover{border-color:var(--baseline)}
+.vlink .thumb{position:relative;display:block}
+.vlink .thumb img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#000}
+.vlink .play{position:absolute;left:50%;top:50%;translate:-50% -50%;width:54px;height:54px;border-radius:50%;
+  display:grid;place-items:center;background:rgba(12,12,12,.72);border:1px solid rgba(255,255,255,.3);color:#fff}
+.vlink:hover .play{background:rgba(12,12,12,.9)}
+.vlink .body{display:block;padding:.85rem 1rem}
+.vlink b{display:block;font-size:.95rem;font-weight:630}
+.vlink .body span{display:block;font-size:.84rem;color:var(--ink-2);margin-top:.25rem}
+.vlink .host{margin-top:.5rem;font-size:.72rem;font-weight:640;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+
+/* full size view, opened from a thumbnail */
+.lb{position:fixed;inset:0;z-index:90;display:none;background:rgba(8,8,8,.93);padding:clamp(.75rem,3vw,2rem)}
+.lb[data-open="true"]{display:grid;grid-template-rows:1fr auto;gap:.9rem;place-items:center}
+.lb img{max-width:100%;max-height:calc(100vh - 9rem);object-fit:contain;border-radius:8px}
+.lb p{color:#e9e9e7;font-size:.88rem;max-width:60ch;text-align:center;margin:0}
+.lb-close{position:absolute;top:.75rem;right:.75rem;width:44px;height:44px;border-radius:10px;
+  border:1px solid rgba(255,255,255,.3);background:rgba(0,0,0,.45);color:#fff;font:inherit;font-size:1.35rem;line-height:1;cursor:pointer}
+.lb-close:hover{background:rgba(0,0,0,.75)}
 .btn:focus-visible,.icon-btn:focus-visible,.theme-btn:focus-visible,.step:focus-visible,.nav-toggle:focus-visible{outline-offset:2px}
 a:focus-visible{outline-offset:2px}
 @supports not selector(:focus-visible){

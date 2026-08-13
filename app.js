@@ -5,13 +5,23 @@ if (location.search.indexOf('draft') > -1) document.documentElement.setAttribute
 (function () {
   var root = document.documentElement;
   var btn = document.getElementById('themeBtn');
-  if (btn) btn.addEventListener('click', function () {
-    var dark = matchMedia('(prefers-color-scheme: dark)').matches;
-    var cur = root.getAttribute('data-theme') || (dark ? 'dark' : 'light');
-    var next = cur === 'dark' ? 'light' : 'dark';
-    root.setAttribute('data-theme', next);
-    try { localStorage.setItem('bg-theme', next); } catch (e) {}
-  });
+  function current() {
+    return root.getAttribute('data-theme') ||
+           (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  }
+  function relabel() {
+    /* the icon is swapped in CSS; this keeps the spoken label in step */
+    btn.setAttribute('aria-label', current() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+  }
+  if (btn) {
+    relabel();
+    btn.addEventListener('click', function () {
+      var next = current() === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('bg-theme', next); } catch (e) {}
+      relabel();
+    });
+  }
 
   /* ------------------------------------------------------------------
      Every figure below comes from data/totals.json, which a scheduled
@@ -217,6 +227,71 @@ if (location.search.indexOf('draft') > -1) document.documentElement.setAttribute
   // if the window grows past the breakpoint, drop the open state
   matchMedia('(min-width: 781px)').addEventListener('change', function (m) {
     if (m.matches) setOpen(false);
+  });
+})();
+
+/* gallery: a thumbnail is a few hundred pixels wide and the file behind it is
+   1200, so a click opens the whole frame with its caption underneath */
+(function () {
+  var gal = document.querySelector('.gtl');   /* one rail, several grids inside it */
+  if (!gal) return;
+
+  var lb, lbImg, lbCap, lbClose, opener;
+
+  function build() {
+    lb = document.createElement('div');
+    lb.className = 'lb';
+    lb.setAttribute('role', 'dialog');
+    lb.setAttribute('aria-modal', 'true');
+    lb.setAttribute('aria-label', 'Photograph, full size');
+    lb.innerHTML = '<button class="lb-close" type="button" aria-label="Close">&times;</button><img alt=""><p></p>';
+    lbClose = lb.querySelector('.lb-close');
+    lbImg = lb.querySelector('img');
+    lbCap = lb.querySelector('p');
+    document.body.appendChild(lb);
+    lbClose.addEventListener('click', close);
+    lb.addEventListener('click', function (e) { if (e.target === lb) close(); });
+  }
+
+  /* the names sit in their own block under the caption, so join the parts
+     with a space rather than letting the sentences run together */
+  function captionOf(fig) {
+    var cap = fig && fig.querySelector('figcaption');
+    if (!cap) return '';
+    return [].map.call(cap.childNodes, function (n) { return (n.textContent || '').trim(); })
+             .filter(Boolean).join(' ');
+  }
+
+  function open(btn) {
+    var img = btn.querySelector('img');
+    if (!img) return;
+    if (!lb) build();
+    lbImg.src = img.currentSrc || img.src;
+    lbImg.alt = img.alt;
+    lbCap.textContent = captionOf(btn.closest('figure'));
+    lb.setAttribute('data-open', 'true');
+    document.body.style.overflow = 'hidden';
+    opener = btn;
+    lbClose.focus();
+  }
+
+  function close() {
+    if (!lb) return;
+    lb.removeAttribute('data-open');
+    lbImg.removeAttribute('src');
+    document.body.style.overflow = '';
+    if (opener) { opener.focus(); opener = null; }
+  }
+
+  gal.addEventListener('click', function (e) {
+    var btn = e.target.closest('.zoom');
+    if (btn) open(btn);
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (!lb || lb.getAttribute('data-open') !== 'true') return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'Tab') { e.preventDefault(); lbClose.focus(); }   /* close is the only control in here */
   });
 })();
 

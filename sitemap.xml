@@ -11,6 +11,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://cricketbailguard.org/gallery.html</loc>
+    <lastmod>2026-08-12</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://cricketbailguard.org/faq.html</loc>
     <lastmod>2026-08-12</lastmod>
     <priority>0.8</priority>
