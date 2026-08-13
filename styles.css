@@ -332,6 +332,7 @@ footer a{color:var(--ink-2)}
 .vlink .body{display:block;padding:.85rem 1rem}
 .vlink b{display:block;font-size:.95rem;font-weight:630}
 .vlink .body span{display:block;font-size:.84rem;color:var(--ink-2);margin-top:.25rem}
+.vlink .body > .host:first-child{margin-top:0}   /* a card that is only a still and its source */
 .vlink .host{margin-top:.5rem;font-size:.72rem;font-weight:640;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
 
 /* full size view, opened from a thumbnail */
