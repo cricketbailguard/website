@@ -29,9 +29,9 @@ if (location.search.indexOf('draft') > -1) document.documentElement.setAttribute
      written into the HTML, so the page stays correct if that fetch fails.
      ------------------------------------------------------------------ */
   var FALLBACK = {
-    games: 673, bowled: 2298, stumped: 162, run_out: 961,
-    hit_wicket: 15, dislodgements: 3436,
-    data_from: '2026-01-18', data_to: '2026-08-23'
+    games: 722, bowled: 2440, stumped: 174, run_out: 1011,
+    hit_wicket: 15, dislodgements: 3640,
+    data_from: '2026-01-18', data_to: '2026-08-30'
   };
 
   var MONTHS = ['January','February','March','April','May','June',
