@@ -29,9 +29,11 @@ if (location.search.indexOf('draft') > -1) document.documentElement.setAttribute
      written into the HTML, so the page stays correct if that fetch fails.
      ------------------------------------------------------------------ */
   var FALLBACK = {
-    games: 829, bowled: 2859, stumped: 232, run_out: 1211,
-    hit_wicket: 20, dislodgements: 4322,
-    data_from: '2026-01-18', data_to: '2026-09-13'
+    games: 853, bowled: 2881, stumped: 235, run_out: 1228,
+    hit_wicket: 20, dislodgements: 4364,
+    data_from: '2026-01-18', data_to: '2026-09-20',
+    states: ["TX", "NC", "MO", "NY", "CA"],
+    places: [{"name": "Dallas-Fort Worth, TX", "state": "TX", "lat": 32.85, "lon": -97, "games": 834, "dislodgements": 4329, "sources": ["Dallas Cricket League", "Dallas Youth Cricket League", "North Texas Cricket Association", "USA Cricket Dallas Hub", "Grand Prairie Cricket Club", "Minor League Cricket"], "grounds": ["Grand Prairie Cricket Stadium"]}, {"name": "Raleigh, NC", "state": "NC", "lat": 35.82, "lon": -78.83, "games": 7, "dislodgements": 19, "sources": ["Minor League Cricket"], "grounds": ["Church Street Park"]}, {"name": "St. Louis, MO", "state": "MO", "lat": 38.81, "lon": -90.7, "games": 5, "dislodgements": 5, "sources": ["Minor League Cricket"], "grounds": ["ACAC Park #1"]}, {"name": "Albany, NY", "state": "NY", "lat": 42.83, "lon": -73.94, "games": 4, "dislodgements": 8, "sources": ["Minor League Cricket"], "grounds": ["NY Ovals #1", "NY Ovals #3"]}, {"name": "Sacramento, CA", "state": "CA", "lat": 38.55, "lon": -121.74, "games": 2, "dislodgements": 2, "sources": ["Minor League Cricket"], "grounds": ["Davis"]}, {"name": "San Jose, CA", "state": "CA", "lat": 37.43, "lon": -121.9, "games": 1, "dislodgements": 1, "sources": ["Minor League Cricket"], "grounds": ["Strikers Cricket Ground"]}]
   };
 
   var MONTHS = ['January','February','March','April','May','June',
@@ -57,6 +59,46 @@ if (location.search.indexOf('draft') > -1) document.documentElement.setAttribute
     return MONTHS[x.m - 1] + ' to ' + MONTHS[y.m - 1] + ' ' + y.y;
   }
 
+  var STATE_NAMES = { TX: 'Texas', NC: 'North Carolina', NY: 'New York', MO: 'Missouri', CA: 'California', GA: 'Georgia',
+    FL: 'Florida', IL: 'Illinois', MI: 'Michigan', WA: 'Washington', MD: 'Maryland', PA: 'Pennsylvania', NJ: 'New Jersey', MA: 'Massachusetts' };
+
+  /* The map: an Albers equal-area projection of the contiguous US, the same one
+     the outline in index.html was drawn with (constants from the build). */
+  var PROJ = { minx: -0.3690416114000689, maxy: 0.4979264977248976, scale: 1328.9703073970581, n: 0.6028370046288244, C: 1.351221325417899, rho0: 1.5562263294996075, lam0: -1.6755160819145565 };
+  function project(lon, lat) {
+    var lam = lon * Math.PI / 180, phi = lat * Math.PI / 180;
+    var rho = Math.sqrt(PROJ.C - 2 * PROJ.n * Math.sin(phi)) / PROJ.n, th = PROJ.n * (lam - PROJ.lam0);
+    var x = rho * Math.sin(th), y = PROJ.rho0 - rho * Math.cos(th);
+    return [(x - PROJ.minx) * PROJ.scale, (PROJ.maxy - y) * PROJ.scale];
+  }
+  var SHORT = { 'Dallas Cricket League': 'DCL', 'Dallas Youth Cricket League': 'DYCL', 'North Texas Cricket Association': 'NTCA',
+    'USA Cricket Dallas Hub': 'USA Cricket Dallas Hub', 'Grand Prairie Cricket Club': 'GPCC', 'Minor League Cricket': 'MiLC' };
+  function drawMap(d) {
+    var g = document.getElementById('mapDots'), list = document.getElementById('placesList');
+    if (!g || !d.places) return;
+    var NS = 'http://www.w3.org/2000/svg';
+    g.innerHTML = '';
+    d.places.slice().sort(function (a, b) { return b.games - a.games; }).forEach(function (p) {
+      var xy = project(p.lon, p.lat), r = 3 + Math.sqrt(p.games);
+      var c = document.createElementNS(NS, 'circle');
+      c.setAttribute('cx', xy[0]); c.setAttribute('cy', xy[1]); c.setAttribute('r', r); c.setAttribute('class', 'dot');
+      c.innerHTML = '<title>' + p.name + ': ' + p.games.toLocaleString() + ' game' + (p.games === 1 ? '' : 's') + ' counted, ' + p.dislodgements.toLocaleString() + ' bail dislodgements' + (p.grounds && p.grounds.length && p.sources.length === 1 ? ' (' + p.grounds.join(', ') + ')' : '') + '</title>';
+      g.appendChild(c);
+      var k = document.createElementNS(NS, 'circle');
+      k.setAttribute('cx', xy[0]); k.setAttribute('cy', xy[1]); k.setAttribute('r', 2.5); k.setAttribute('class', 'core');
+      g.appendChild(k);
+      var t = document.createElementNS(NS, 'text');
+      var left = xy[0] > 700;   /* labels on the east coast sit to the left of the dot */
+      t.setAttribute('x', xy[0] + (left ? -(r + 6) : r + 6)); t.setAttribute('y', xy[1] + 5);
+      t.setAttribute('text-anchor', left ? 'end' : 'start'); t.setAttribute('class', 'lbl');
+      t.textContent = p.name.replace(/,.*$/, '');
+      g.appendChild(t);
+    });
+    if (list) list.innerHTML = d.places.map(function (p) {
+      return '<li><b>' + p.name + '</b> ' + p.sources.map(function (s) { return SHORT[s] || s; }).join(', ') + '</li>';
+    }).join('');
+  }
+
   var heroTarget = FALLBACK.dislodgements;   // kept current so a late fetch retargets the count up
   var animating = false;
 
@@ -68,7 +110,11 @@ if (location.search.indexOf('draft') > -1) document.documentElement.setAttribute
       perGame: d.games ? (d.dislodgements / d.games).toFixed(1) : '',
       range: rangeText(d.data_from, d.data_to),
       months: monthsText(d.data_from, d.data_to),
-      updated: longDate(d.data_to)
+      updated: longDate(d.data_to),
+      states: d.states ? String(d.states.length) : '',
+      stateNames: d.states ? d.states.map(function (s) { return STATE_NAMES[s] || s; }).join(', ') : '',
+      placesCount: d.places ? String(d.places.length) : '',
+      leagues: d.places ? String(d.places.reduce(function (acc, p) { (p.sources || []).forEach(function (s) { if (acc.indexOf(s) < 0) acc.push(s); }); return acc; }, []).length) : ''
     };
     Object.keys(values).forEach(function (k) {
       if (!values[k]) return;
@@ -136,6 +182,7 @@ if (location.search.indexOf('draft') > -1) document.documentElement.setAttribute
   function apply(d) {
     bind(d);
     if (donutG) drawChart(d);
+    drawMap(d);
   }
 
   apply(FALLBACK);
@@ -153,7 +200,9 @@ if (location.search.indexOf('draft') > -1) document.documentElement.setAttribute
         games: t.games, bowled: t.bowled, stumped: t.stumped, run_out: t.run_out,
         hit_wicket: t.hit_wicket, dislodgements: t.dislodgements,
         data_from: j.data_from || FALLBACK.data_from,
-        data_to: j.data_to || FALLBACK.data_to
+        data_to: j.data_to || FALLBACK.data_to,
+        states: Array.isArray(j.states) && j.states.length ? j.states : FALLBACK.states,
+        places: Array.isArray(j.places) && j.places.length ? j.places : FALLBACK.places
       });
     })
     .catch(function () { /* keep the built in values */ });

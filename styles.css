@@ -88,6 +88,17 @@ section{padding:clamp(3.2rem,6vw,5rem) 0}
 .backers{margin-top:2rem;text-align:center}
 .backers .cap{font-size:.79rem;font-weight:640;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
 .logos{display:flex;flex-wrap:wrap;justify-content:center;gap:.6rem;margin-top:.95rem}
+.map-wrap{max-width:820px;margin:1rem auto 0}
+.usmap{display:block;width:100%;height:auto}
+.usmap .land{fill:var(--plane);stroke:var(--border);stroke-width:1;vector-effect:non-scaling-stroke}
+.usmap .dot{fill:var(--accent);fill-opacity:.28;stroke:var(--accent);stroke-width:1.5;vector-effect:non-scaling-stroke}
+.usmap .core{fill:var(--accent)}
+.usmap .lbl{font-size:15px;font-weight:620;fill:var(--ink);paint-order:stroke;stroke:var(--surface);stroke-width:4px;stroke-linejoin:round}
+.usmap .lbl small{font-weight:400;fill:var(--ink-2)}
+.places{list-style:none;margin:.7rem 0 0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:.4rem .9rem;font-size:.86rem;color:var(--ink-2)}
+.places li{max-width:100%;text-align:center}
+.places b{color:var(--ink);font-weight:620}
+@media (max-width:560px){.usmap .lbl{font-size:22px}.places{flex-direction:column;gap:.3rem}}
 .logo{display:inline-flex;flex-direction:column;align-items:flex-start;gap:.15rem;padding:.65rem 1.05rem;border:1px solid var(--border);border-radius:10px;background:var(--surface);text-align:left}
 .logo b{color:var(--ink);font-weight:640;font-size:.92rem}
 .logo i{font-style:normal;color:var(--muted);font-size:.75rem}
