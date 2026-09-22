@@ -29,11 +29,11 @@ if (location.search.indexOf('draft') > -1) document.documentElement.setAttribute
      written into the HTML, so the page stays correct if that fetch fails.
      ------------------------------------------------------------------ */
   var FALLBACK = {
-    games: 853, bowled: 2881, stumped: 235, run_out: 1228,
-    hit_wicket: 20, dislodgements: 4364,
-    data_from: '2026-01-18', data_to: '2026-09-20',
+    games: 906, bowled: 3075, stumped: 248, run_out: 1319,
+    hit_wicket: 23, dislodgements: 4665,
+    data_from: '2026-01-18', data_to: '2026-09-21',
     states: ["TX", "NC", "MO", "NY", "CA"],
-    places: [{"name": "Dallas-Fort Worth, TX", "state": "TX", "lat": 32.85, "lon": -97, "games": 834, "dislodgements": 4329, "sources": ["Dallas Cricket League", "Dallas Youth Cricket League", "North Texas Cricket Association", "USA Cricket Dallas Hub", "Grand Prairie Cricket Club", "Minor League Cricket"], "grounds": ["Grand Prairie Cricket Stadium"]}, {"name": "Raleigh, NC", "state": "NC", "lat": 35.82, "lon": -78.83, "games": 7, "dislodgements": 19, "sources": ["Minor League Cricket"], "grounds": ["Church Street Park"]}, {"name": "St. Louis, MO", "state": "MO", "lat": 38.81, "lon": -90.7, "games": 5, "dislodgements": 5, "sources": ["Minor League Cricket"], "grounds": ["ACAC Park #1"]}, {"name": "Albany, NY", "state": "NY", "lat": 42.83, "lon": -73.94, "games": 4, "dislodgements": 8, "sources": ["Minor League Cricket"], "grounds": ["NY Ovals #1", "NY Ovals #3"]}, {"name": "Sacramento, CA", "state": "CA", "lat": 38.55, "lon": -121.74, "games": 2, "dislodgements": 2, "sources": ["Minor League Cricket"], "grounds": ["Davis"]}, {"name": "San Jose, CA", "state": "CA", "lat": 37.43, "lon": -121.9, "games": 1, "dislodgements": 1, "sources": ["Minor League Cricket"], "grounds": ["Strikers Cricket Ground"]}]
+    places: [{"name": "Dallas-Fort Worth, TX", "state": "TX", "lat": 32.85, "lon": -97, "games": 883, "dislodgements": 4619, "sources": ["Dallas Cricket League", "Dallas Youth Cricket League", "North Texas Cricket Association", "USA Cricket Dallas Hub", "Grand Prairie Cricket Club", "Minor League Cricket"], "grounds": ["Grand Prairie Cricket Stadium"]}, {"name": "Raleigh, NC", "state": "NC", "lat": 35.82, "lon": -78.83, "games": 11, "dislodgements": 24, "sources": ["Minor League Cricket"], "grounds": ["Church Street Park"]}, {"name": "St. Louis, MO", "state": "MO", "lat": 38.81, "lon": -90.7, "games": 5, "dislodgements": 5, "sources": ["Minor League Cricket"], "grounds": ["ACAC Park #1"]}, {"name": "Albany, NY", "state": "NY", "lat": 42.83, "lon": -73.94, "games": 4, "dislodgements": 8, "sources": ["Minor League Cricket"], "grounds": ["NY Ovals #1", "NY Ovals #3"]}, {"name": "Sacramento, CA", "state": "CA", "lat": 38.55, "lon": -121.74, "games": 2, "dislodgements": 8, "sources": ["Minor League Cricket"], "grounds": ["Davis"]}, {"name": "San Jose, CA", "state": "CA", "lat": 37.43, "lon": -121.9, "games": 1, "dislodgements": 1, "sources": ["Minor League Cricket"], "grounds": ["Strikers Cricket Ground"]}]
   };
 
   var MONTHS = ['January','February','March','April','May','June',
