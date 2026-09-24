@@ -470,6 +470,10 @@ a:focus-visible{outline-offset:2px}
 .compare th,.compare td{text-align:left;padding:.72rem .85rem;border-bottom:1px solid var(--grid);
   font-variant-numeric:normal;vertical-align:top;background:var(--plane)}
 .compare thead th{color:var(--ink);font-weight:645;font-size:.85rem;background:var(--raised);white-space:nowrap}
+/* one band across the whole table; beats the sticky first-column rule below */
+.compare thead tr.grouphead th{position:static;left:auto;text-align:center;
+  font-size:1rem;font-weight:660;letter-spacing:-.01em;
+  background:var(--plane);border-bottom:1px solid var(--grid)}
 .compare tbody th{font-weight:500;color:var(--ink-2);font-size:.86rem}
 .compare tbody tr:last-child th,.compare tbody tr:last-child td{border-bottom:0}
 .compare .y{color:var(--accent);font-weight:640}
