@@ -425,6 +425,28 @@ a:focus-visible{outline-offset:2px}
    this page is written for is sceptical, and putting the answers behind a
    click is the wrong instinct: it also keeps them out of Ctrl+F and out of
    print. The index at the top just jumps. */
+/* eight of them, so 4x2 rather than a ragged last row */
+.principles{display:grid;grid-template-columns:1fr;gap:.75rem}
+@media (min-width:560px){.principles{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:980px){.principles{grid-template-columns:repeat(4,1fr)}}
+.principles .card{padding:1.05rem 1.15rem}
+.principles .card b{display:flex;align-items:baseline;gap:.45rem;font-weight:640;font-size:.99rem}
+.principles .pn{flex:none;color:var(--muted);font-size:1.05rem;font-weight:700;font-variant-numeric:tabular-nums}
+/* the name is how the rest of the site cites a principle, so it is the link */
+.principles .tag{display:inline-block;margin-top:.45rem;color:var(--accent);font-size:.84rem;font-weight:650;
+  letter-spacing:.01em;text-decoration:none}
+.principles .tag:hover{text-decoration:underline}
+.compare .rowsub{display:block;margin-top:.15rem;font-weight:400;font-size:.86em;color:var(--muted)}
+.principles .card span{display:block;color:var(--ink-2);font-size:.9rem;margin-top:.35rem}
+
+/* Each question is addressable. The mark is quiet until the question is
+   hovered or the link is focused, so it never competes with the question
+   itself, but the permanent link is always one click away. */
+.qa h3 .anchor{margin-left:.4rem;font-weight:400;color:var(--muted);text-decoration:none;opacity:0;transition:opacity .12s}
+.qa h3:hover .anchor,.qa h3 .anchor:focus-visible{opacity:1}
+.qa h3 .anchor:hover{color:var(--accent)}
+@media (hover:none){.qa h3 .anchor{opacity:.45}}
+
 .qa{padding:1.3rem 0;border-bottom:1px solid var(--border)}
 .qa:last-child{border-bottom:0}
 .qa h3{font-size:1.06rem;font-weight:645;letter-spacing:-.011em;scroll-margin-top:1.4rem}
