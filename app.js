@@ -74,7 +74,7 @@ if (location.search.indexOf('draft') > -1) document.documentElement.setAttribute
   var SHORT = { 'Dallas Cricket League': 'DCL', 'Dallas Youth Cricket League': 'DYCL', 'North Texas Cricket Association': 'NTCA',
     'USA Cricket Dallas Hub': 'USA Cricket Dallas Hub', 'Grand Prairie Cricket Club': 'GPCC', 'Minor League Cricket': 'MiLC' };
   function drawMap(d) {
-    var g = document.getElementById('mapDots'), list = document.getElementById('placesList');
+    var g = document.getElementById('mapDots');
     if (!g || !d.places) return;
     var NS = 'http://www.w3.org/2000/svg';
     g.innerHTML = '';
@@ -94,9 +94,6 @@ if (location.search.indexOf('draft') > -1) document.documentElement.setAttribute
       t.textContent = p.name.replace(/,.*$/, '');
       g.appendChild(t);
     });
-    if (list) list.innerHTML = d.places.map(function (p) {
-      return '<li><b>' + p.name + '</b> ' + p.sources.map(function (s) { return SHORT[s] || s; }).join(', ') + '</li>';
-    }).join('');
   }
 
   var heroTarget = FALLBACK.dislodgements;   // kept current so a late fetch retargets the count up
