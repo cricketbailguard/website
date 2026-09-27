@@ -38,6 +38,8 @@
       "acceptedAnswer": { "@type": "Answer", "text": "In the standard build the collar rests on a lower stopper, so the bails carry no added mass at all. In the simplified build without that stopper the collar hangs from the bails and adds roughly 6 to 7.5 grams per bail. The Laws of Cricket set bail dimensions but specify no mass. Wooden bails in ordinary use run from about 8 grams to over 20, and the LED bails used in international cricket weigh around 27 grams." } },
     { "@type": "Question", "name": "Does either team get an advantage?",
       "acceptedAnswer": { "@type": "Answer", "text": "No. Both sides bat and bowl at the same wicket, with the same stumps, bails and collars, in the same conditions." } },
+    { "@type": "Question", "name": "Does the collar give the fielding side a bigger target?",
+      "acceptedAnswer": { "@type": "Answer", "text": "A little, but only from a few angles, and a factory made collar stays within the stump width the Laws already allow. The collar is wider than the stump, so a ball can hit it even when it would have missed the stumps. This only happens when the throw comes from within about 6 degrees of the line of the stumps, which is more than 90% of directions ruled out. From square it adds 1.24% to the target in the worst case, and 0.03% averaged over all directions. A stump may be 34.9 mm or 38.1 mm wide and both are legal, and that difference alone changes the target by 2.28%, so even the worst case is about half of what the Laws already allow between two legal wickets." } },
     { "@type": "Question", "name": "Is it legal under the Laws of Cricket?",
       "acceptedAnswer": { "@type": "Answer", "text": "Yes. MCC Law 8.3.4, introduced in the 2017 Code and effective from 1 October 2017, states that devices aimed at protecting player safety by limiting the distance that a bail can travel off the stumps will be allowed, subject to the approval of the Governing Body for the match and the Ground Authority." } },
     { "@type": "Question", "name": "Has any governing body formally approved it?",
@@ -102,6 +104,7 @@
       <a href="#dislodge">Does it stop the bails coming off when they should?</a>
       <a href="#mass">Does the extra mass make the bails harder to dislodge?</a>
       <a href="#advantage">Does either team get an advantage?</a>
+      <a href="#target">Does the collar give the fielding side a bigger target?</a>
       <a href="#camera">Does it change what a dismissal looks like on camera?</a>
       <b>Is it allowed?</b>
       <a href="#law">Is it legal under the Laws of Cricket?</a>
@@ -184,6 +187,66 @@
       No. Both sides bat and bowl at the same wicket, with the same stumps, bails and
       collars, under the same conditions. Nothing about it favours a batting or a
       bowling side.
+    </p>
+  </div>
+
+  <div class="qa">
+    <h3 id="target">Does the collar give the fielding side a bigger target?<a class="anchor" href="#target" aria-label="Link to this question">#</a></h3>
+    <p>
+      A little, but only from a few angles. We measured it. A factory made collar stays
+      within the stump width the Laws already allow.
+    </p>
+    <p>
+      The collar is wider than the stump, so a ball can hit the collar even when it
+      would have missed the stumps. This only happens when the throw comes from within
+      about 6 degrees of the line of the stumps, or 8 degrees when the collar is
+      pushed to one side. For the striker's end, that means
+      square leg or point. For the bowler's end, it means the area around mid off and
+      mid on, which sit close to square of those stumps. From every other direction the
+      stumps hide the collar and it adds nothing. That is more than 90% of the
+      directions a throw can come from.
+    </p>
+    <div class="twrap">
+      <table class="compare">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Throw from square</th>
+            <th scope="col">All directions</th>
+            <th scope="col">Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">As built, worst case</th>
+            <td class="n">+1.24%</td>
+            <td class="n">+0.03%</td>
+            <td></td>
+          </tr>
+          <tr>
+            <th scope="row">Factory made, 1 mm wall on a 34.9 mm stump</th>
+            <td class="y">+0.16%</td>
+            <td class="y">+0.001%</td>
+            <td class="y">Still within the legal limit. A stump may be up to 38.1 mm wide. This is 37.9 mm at its widest.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      The worst case needs all of these at the same time: the thinnest stump the Laws
+      allow (34.9 mm), the collar pushed to one side, and a throw from square from a deep
+      fielder. The normal case is +1.17%. On the thickest legal stump it is +0.84%.
+    </p>
+    <p>
+      Compare this with the Laws. A stump can be 34.9 mm or 38.1 mm wide, and both are
+      legal. That difference alone changes the target by 2.28%. Our worst case (+1.24%)
+      is about half of that.
+    </p>
+    <p class="note">
+      How we measured it: the target is the area a ball's centre can pass through and
+      still hit the wicket. Ball 72 mm wide. Bails 12.7 mm above the stumps, the most
+      the Laws allow.
+      <a href="https://github.com/anishanup/cricket-bail-safety-trial-tools/tree/main/analysis/collar-target-area" target="_blank" rel="noopener">Full calculation</a>.
     </p>
   </div>
 
